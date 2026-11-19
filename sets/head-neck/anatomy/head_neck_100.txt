@@ -1,0 +1,699 @@
+Q: Pterion fracture most dangerously injures
+A) Superior sagittal sinus
+B) Middle meningeal artery
+C) Middle cerebral artery
+D) Facial artery
+Answer: B
+
+Q: Foramen spinosum transmits
+A) ICA
+B) Middle meningeal artery
+C) V2
+D) V3
+Answer: B
+
+Q: Foramen ovale transmits
+A) V2
+B) VII
+C) VI
+D) V3
+Answer: D
+
+Q: NOT passing through the superior orbital fissure
+A) VI
+B) II (optic nerve)
+C) IV
+D) III
+Answer: B
+
+Q: Jugular foramen transmits
+A) VII, VIII
+B) IX, X, XI
+C) V3, VI
+D) X, XI, XII
+Answer: B
+
+Q: Hypoglossal canal transmits
+A) XII
+B) IX
+C) XI
+D) X
+Answer: A
+
+Q: Cribriform plate transmits
+A) ICA
+B) Maxillary nerve
+C) Optic nerve
+D) Olfactory nerve fibres
+Answer: D
+
+Q: Investing layer of deep cervical fascia encloses
+A) Carotid vessels
+B) Thyroid
+C) SCM and trapezius
+D) Prevertebral muscles
+Answer: C
+
+Q: NOT in the carotid sheath
+A) Sympathetic trunk
+B) IJV
+C) Vagus
+D) CCA
+Answer: A
+
+Q: Prevertebral fascia forms the
+A) Floor of posterior triangle
+B) Roof of posterior triangle
+C) Thyroid capsule
+D) Roof of carotid triangle
+Answer: A
+
+Q: Retropharyngeal abscess may spread to the
+A) Orbit
+B) Axilla
+C) Anterior mediastinum
+D) Posterior mediastinum
+Answer: D
+
+Q: Spinal accessory injury in the posterior triangle causes
+A) Trapezius weakness / shoulder drop
+B) Winged scapula
+C) Platysma paralysis
+D) Diaphragm paralysis
+Answer: A
+
+Q: Floor of posterior triangle
+A) Splenius capitis, levator scapulae, scalenus medius
+B) Digastric
+C) Scalenus anterior, longus colli
+D) Mylohyoid
+Answer: A
+
+Q: Carotid triangle boundary
+A) Mylohyoid
+B) Superior belly of omohyoid
+C) Inferior belly of omohyoid
+D) Anterior belly of digastric
+Answer: B
+
+Q: Infrahyoid muscles (except thyrohyoid) are supplied by
+A) Hypoglossal directly
+B) Facial
+C) Vagus
+D) Ansa cervicalis
+Answer: D
+
+Q: Phrenic nerve roots
+A) C4–T1
+B) C5–7
+C) C3–5
+D) C1–3
+Answer: C
+
+Q: NOT a cutaneous branch of the cervical plexus
+A) Greater occipital
+B) Transverse cervical
+C) Lesser occipital
+D) Great auricular
+Answer: A
+
+Q: Erb’s point is at
+A) Middle of posterior border of SCM
+B) Lower border of mandible
+C) Anterior border of SCM
+D) Cricoid level
+Answer: A
+
+Q: Superior root of ansa cervicalis (C1) travels with
+A) Accessory
+B) Glossopharyngeal
+C) Hypoglossal nerve
+D) Vagus
+Answer: C
+
+Q: The atlas lacks
+A) Transverse foramen
+B) Anterior arch
+C) Lateral masses
+D) Body and spinous process
+Answer: D
+
+Q: Head rotation occurs mainly at
+A) C2–C3
+B) Atlantoaxial joint
+C) C6–C7
+D) Atlanto-occipital joint
+Answer: B
+
+Q: Vertebral artery normally enters the transverse foramen of
+A) C6
+B) C3
+C) C7
+D) C1
+Answer: A
+
+Q: Scalenus anterior
+A) Brachial plexus lies in front
+B) Subclavian artery lies in front
+C) Phrenic nerve lies on its anterior surface
+D) Subclavian vein lies behind it
+Answer: C
+
+Q: Branches of the 1st part of subclavian artery
+A) Costocervical only
+B) Superior thoracic
+C) Vertebral, thyrocervical, internal thoracic
+D) Dorsal scapular only
+Answer: C
+
+Q: Thoracic duct drains into
+A) Right subclavian vein
+B) Left venous angle
+C) SVC
+D) Azygos vein
+Answer: B
+
+Q: Thyrocervical trunk gives
+A) Superior thyroid, lingual
+B) Facial, occipital
+C) Inferior thyroid, suprascapular, transverse cervical
+D) Vertebral
+Answer: C
+
+Q: Branches of the ICA in the neck
+A) Facial
+B) None
+C) Lingual
+D) Superior thyroid
+Answer: B
+
+Q: First branch of the ECA
+A) Superior thyroid
+B) Lingual
+C) Ascending pharyngeal
+D) Facial
+Answer: A
+
+Q: Carotid sinus is innervated by
+A) X
+B) XI
+C) XII
+D) IX
+Answer: D
+
+Q: Virchow’s node is
+A) Submental
+B) Jugulodigastric
+C) Right submandibular
+D) Left supraclavicular
+Answer: D
+
+Q: Nerve at risk when ligating the superior thyroid artery
+A) Recurrent laryngeal nerve
+B) External laryngeal nerve
+C) Hypoglossal nerve
+D) Internal laryngeal nerve
+Answer: B
+
+Q: Dangerous layer of the scalp
+A) Dense connective tissue
+B) Galea aponeurotica
+C) Skin
+D) Loose areolar tissue
+Answer: D
+
+Q: Facial nerve exits the skull via
+A) Foramen ovale
+B) Jugular foramen
+C) Foramen spinosum
+D) Stylomastoid foramen
+Answer: D
+
+Q: NOT a facial nerve branch in the parotid
+A) Marginal mandibular
+B) Lingual
+C) Buccal
+D) Temporal
+Answer: B
+
+Q: Bell’s palsy (LMN lesion)
+A) Forehead spared
+B) Forehead involved
+C) Only taste lost
+D) Contralateral face affected
+Answer: B
+
+Q: Parotid duct pierces
+A) Mylohyoid
+B) Masseter
+C) Buccinator
+D) Orbicularis oris
+Answer: C
+
+Q: Secretomotor supply of parotid
+A) VII via submandibular ganglion
+B) V3 directly
+C) IX via otic ganglion
+D) Vagus
+Answer: C
+
+Q: Frey syndrome results from aberrant regeneration of
+A) Facial nerve
+B) Great auricular nerve
+C) Lingual nerve
+D) Auriculotemporal nerve fibres
+Answer: D
+
+Q: Facial vein is dangerous because it
+A) Drains into azygos
+B) Is valveless and connects to the cavernous sinus
+C) Has a thick wall
+D) Is an end vein
+Answer: B
+
+Q: Skin over angle of mandible is supplied by
+A) Great auricular
+B) Buccal
+C) Auriculotemporal
+D) Mental
+Answer: A
+
+Q: Muscle of mastication that opens mouth / protrudes mandible
+A) Medial pterygoid
+B) Lateral pterygoid
+C) Temporalis
+D) Masseter
+Answer: B
+
+Q: Sensory branch of the anterior division of V3
+A) Inferior alveolar nerve
+B) Buccal nerve
+C) Lingual nerve
+D) Auriculotemporal nerve
+Answer: B
+
+Q: Middle meningeal artery arises from
+A) 3rd part
+B) 2nd part
+C) Facial artery
+D) 1st part of maxillary artery
+Answer: D
+
+Q: Chorda tympani carries
+A) General sensation of anterior 2/3
+B) Motor to tongue
+C) Taste from posterior 1/3
+D) Taste from anterior 2/3 of tongue
+Answer: D
+
+Q: TMJ dislocation is usually
+A) Posterior
+B) Anterior
+C) Lateral
+D) Superior
+Answer: B
+
+Q: Pterygoid venous plexus communicates with
+A) Cavernous sinus
+B) Subclavian vein
+C) Sigmoid sinus
+D) Azygos vein
+Answer: A
+
+Q: Inferior alveolar nerve ends as
+A) Lingual nerve
+B) Buccal nerve
+C) Infraorbital nerve
+D) Mental nerve
+Answer: D
+
+Q: Little’s area is NOT supplied by
+A) Greater palatine artery
+B) Sphenopalatine artery
+C) Posterior auricular artery
+D) Anterior ethmoidal artery
+Answer: C
+
+Q: Maxillary sinus opens into
+A) Sphenoethmoidal recess
+B) Inferior meatus
+C) Middle meatus
+D) Superior meatus
+Answer: C
+
+Q: Nasolacrimal duct opens into
+A) Vestibule
+B) Superior meatus
+C) Middle meatus
+D) Inferior meatus
+Answer: D
+
+Q: Sphenoid sinus opens into
+A) Sphenoethmoidal recess
+B) Inferior meatus
+C) Middle meatus
+D) Hiatus semilunaris
+Answer: A
+
+Q: Frontal sinus drains via
+A) Sphenoethmoidal recess
+B) Frontonasal duct to middle meatus
+C) Superior meatus
+D) Inferior meatus
+Answer: B
+
+Q: Main arterial supply of nasal cavity
+A) Ophthalmic artery
+B) Facial artery
+C) Sphenopalatine artery
+D) Lingual artery
+Answer: C
+
+Q: Maxillary sinus drains poorly because
+A) Its ostium is high on the medial wall
+B) It has no mucosa
+C) It opens in the inferior meatus
+D) Its ostium is on the floor
+Answer: A
+
+Q: Genioglossus palsy: tongue deviates
+A) Toward the lesion
+B) Upward
+C) No deviation
+D) Away from the lesion
+Answer: A
+
+Q: Taste of posterior 1/3 of tongue
+A) VII
+B) V3
+C) X
+D) IX
+Answer: D
+
+Q: NOT supplied by the hypoglossal nerve
+A) Styloglossus
+B) Hyoglossus
+C) Genioglossus
+D) Palatoglossus
+Answer: D
+
+Q: Submandibular duct opens
+A) In the vestibule
+B) At foramen cecum
+C) Opposite upper 2nd molar
+D) On sublingual papilla beside frenulum
+Answer: D
+
+Q: Lymph from the tongue tip drains first to
+A) Parotid nodes
+B) Deep cervical nodes
+C) Submental nodes
+D) Submandibular nodes
+Answer: C
+
+Q: Soft palate muscle supplied by V3
+A) Palatoglossus
+B) Musculus uvulae
+C) Tensor veli palatini
+D) Levator veli palatini
+Answer: C
+
+Q: Gag reflex
+A) VII afferent, XII efferent
+B) IX afferent, X efferent
+C) X afferent, IX efferent
+D) V afferent, VII efferent
+Answer: B
+
+Q: Pharyngeal constrictors’ motor supply
+A) IX
+B) XII
+C) Vagus via pharyngeal plexus
+D) V3
+Answer: C
+
+Q: Zenker diverticulum occurs at
+A) Gastroesophageal junction
+B) Diaphragm
+C) Killian’s dehiscence
+D) Aortic arch
+Answer: C
+
+Q: Esophagus begins at
+A) C6
+B) T1
+C) C4
+D) T4
+Answer: A
+
+Q: Main arterial supply of palatine tonsil
+A) Maxillary artery
+B) Lingual artery
+C) Tonsillar branch of facial artery
+D) Superior thyroid artery
+Answer: C
+
+Q: Pharyngeal recess (fossa of Rosenmüller) is in
+A) Nasopharynx
+B) Laryngopharynx
+C) Oropharynx
+D) Larynx
+Answer: A
+
+Q: Muscle supplied by IX
+A) Palatopharyngeus
+B) Cricopharyngeus
+C) Superior constrictor
+D) Stylopharyngeus
+Answer: D
+
+Q: Narrowest part of the esophagus
+A) Left bronchus
+B) Aortic arch
+C) Diaphragm
+D) Pharyngoesophageal junction
+Answer: D
+
+Q: Only complete cartilaginous ring of the larynx
+A) Thyroid
+B) Cricoid
+C) Arytenoid
+D) Epiglottis
+Answer: B
+
+Q: Only abductor of the vocal folds
+A) Lateral cricoarytenoid
+B) Cricothyroid
+C) Thyroarytenoid
+D) Posterior cricoarytenoid
+Answer: D
+
+Q: Cricothyroid is supplied by
+A) Hypoglossal
+B) Internal laryngeal nerve
+C) Recurrent laryngeal nerve
+D) External laryngeal nerve
+Answer: D
+
+Q: Sensation above the vocal folds
+A) Recurrent laryngeal nerve
+B) Internal laryngeal nerve
+C) Glossopharyngeal only
+D) External laryngeal nerve
+Answer: B
+
+Q: Trachea bifurcates at
+A) C6
+B) T10
+C) T8
+D) T4–T5
+Answer: D
+
+Q: Tracheostomy is usually through rings
+A) 8th–10th
+B) 1st–2nd
+C) 2nd–4th
+D) 5th–7th
+Answer: C
+
+Q: Narrowest part of the adult laryngeal cavity
+A) Infraglottic cavity
+B) Ventricle
+C) Vestibule
+D) Rima glottidis
+Answer: D
+
+Q: Superior oblique is supplied by
+A) Trochlear nerve
+B) Abducens nerve
+C) Oculomotor nerve
+D) Ophthalmic nerve
+Answer: A
+
+Q: Down-and-out eye, ptosis, dilated pupil
+A) CN III palsy
+B) Horner syndrome
+C) CN IV palsy
+D) CN VI palsy
+Answer: A
+
+Q: Aqueous humor drains through
+A) Lacrimal sac
+B) Canal of Schlemm
+C) Hyaloid canal
+D) Central retinal vein
+Answer: B
+
+Q: Parasympathetic supply of lacrimal gland
+A) IX via otic ganglion
+B) V1
+C) Facial via pterygopalatine ganglion
+D) Oculomotor via ciliary ganglion
+Answer: C
+
+Q: Accommodation
+A) Ciliary muscle contracts, lens becomes more convex
+B) Dilator pupillae contracts
+C) Lateral rectus contracts
+D) Ciliary muscle relaxes, lens rounder
+Answer: A
+
+Q: Common site of orbital blow-out fracture
+A) Floor
+B) Apex
+C) Roof
+D) Lateral wall
+Answer: A
+
+Q: Corneal reflex
+A) V1 afferent, VII efferent
+B) V2 afferent, VII efferent
+C) II afferent, III efferent
+D) VII afferent, V1 efferent
+Answer: A
+
+Q: Stapedius is supplied by
+A) Facial nerve
+B) IX
+C) Vagus
+D) V3
+Answer: A
+
+Q: Tensor tympani is supplied by
+A) IX
+B) V3
+C) VII
+D) VIII
+Answer: B
+
+Q: Cone of light is in the
+A) Posteroinferior
+B) Posterosuperior
+C) Anteroinferior quadrant
+D) Anterosuperior
+Answer: C
+
+Q: Organ of Corti lies on
+A) Oval window
+B) Basilar membrane in scala media
+C) Tectorial membrane
+D) Reissner membrane
+Answer: B
+
+Q: High-frequency sounds are detected at
+A) Saccule
+B) Cochlear apex
+C) Utricle
+D) Cochlear base
+Answer: D
+
+Q: Auricular branch of vagus supplies
+A) Roof of tympanic cavity
+B) Posterior wall of external acoustic meatus
+C) Lobule
+D) Tragus only
+Answer: B
+
+Q: Second arch cartilage gives
+A) Thyroid cartilage
+B) Malleus, incus
+C) Stapes, styloid process, lesser horn of hyoid
+D) Cricoid
+Answer: C
+
+Q: Third pharyngeal pouch gives
+A) Middle ear
+B) Superior parathyroid
+C) Palatine tonsil
+D) Inferior parathyroid and thymus
+Answer: D
+
+Q: Fourth pharyngeal pouch gives
+A) Palatine tonsil
+B) Superior parathyroid
+C) Thymus
+D) Inferior parathyroid
+Answer: B
+
+Q: Second pharyngeal pouch gives
+A) Thymus
+B) Parathyroid
+C) Eustachian tube
+D) Palatine tonsil
+Answer: D
+
+Q: Thyroglossal duct cyst
+A) Midline, moves on tongue protrusion
+B) Lateral, anterior to SCM
+C) Posterior triangle
+D) Submandibular
+Answer: A
+
+Q: Cleft lip: failure of fusion of
+A) Maxillary and medial nasal prominences
+B) Palatine shelves
+C) Mandibular prominences
+D) Lateral nasal and maxillary prominences
+Answer: A
+
+Q: Branchial cyst usually lies
+A) Posterior triangle
+B) Submental
+C) Anterior border of SCM
+D) Midline
+Answer: C
+
+Q: Best first test for acute intracranial haemorrhage / skull fracture
+A) Ultrasound
+B) CT
+C) Plain X-ray
+D) MRI
+Answer: B
+
+Q: Best for brain soft tissue detail
+A) MRI
+B) Barium study
+C) CT
+D) Plain X-ray
+Answer: A
+
+Q: View for the dens (odontoid peg)
+A) Open-mouth view
+B) Towne’s
+C) Water’s
+D) Lateral skull
+Answer: A
+
+Q: First-line imaging of thyroid nodule
+A) CT
+B) Ultrasound
+C) Angiography
+D) Barium swallow
+Answer: B
+
+Q: View for fluid in maxillary sinuses
+A) Lateral cervical
+B) Occipitomental (Water’s)
+C) Open-mouth
+D) Towne’s
+Answer: B

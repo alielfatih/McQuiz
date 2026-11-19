@@ -1,0 +1,14 @@
+{
+  "name": "My MCQ library",
+  "catalogs": [],
+  "sets": [
+    {
+      "title": "Head & Neck: full revision set",
+      "module": "Head & Neck",
+      "subject": "Anatomy",
+      "topic": "",
+      "file": "head-neck/anatomy/head_neck_100.txt",
+      "count": 100
+    }
+  ]
+}
