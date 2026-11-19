@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>McQuiz</title>
+<style>
+:root{color-scheme:light;--bg:#f4f1ea;--card:#fbfaf6;--tx:#2b2f36;--mu:#6b7078;--bd:#ddd8cc;--ac:#3f6fb5;--acb:#e6edf7;--ok:#2f7d4f;--okb:#e1f0e5;--no:#a8403a;--nob:#f6e1de;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1a1d21;--card:#22262c;--tx:#d9dce1;--mu:#9097a1;--bd:#343a43;--ac:#7aa2d8;--acb:#26303f;--ok:#8fd0a6;--okb:#1f3a2b;--no:#e5a29c;--nob:#4a2a28}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1a1d21;--card:#22262c;--tx:#d9dce1;--mu:#9097a1;--bd:#343a43;--ac:#7aa2d8;--acb:#26303f;--ok:#8fd0a6;--okb:#1f3a2b;--no:#e5a29c;--nob:#4a2a28}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:14px}
+h1{font-size:21px;margin:6px 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card,.q{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+button,select,input{font:inherit;color:var(--tx)}
+button{cursor:pointer}
+.n,.s{border-radius:10px;padding:9px 15px;border:1px solid var(--bd)}
+.n{background:var(--ac);color:var(--bg);border-color:var(--ac)}.n:disabled{opacity:.4;cursor:default}
+.s{background:transparent}.s:hover{background:var(--acb)}
+.sm{padding:5px 11px;font-size:15px}
+select,input[type=text],textarea{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:7px}
+textarea{width:100%;box-sizing:border-box;height:200px;font:13px/1.4 ui-monospace,Menlo,monospace}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tabs button{flex:1;padding:10px;border:1px solid var(--bd);background:transparent;border-radius:10px}
+.tabs button.on{background:var(--acb);border-color:var(--ac);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}
+.mu{color:var(--mu);font-size:14px}
+details{margin:4px 0}summary{cursor:pointer;padding:6px 2px;font-weight:600}
+details details{margin-left:14px}
+.set{display:flex;align-items:center;gap:10px;padding:7px 8px;margin-left:6px;border-radius:10px}
+.set:hover{background:var(--acb)}.set label{flex:1;display:flex;gap:8px;align-items:center;cursor:pointer}
+.ct{font-size:14px;color:var(--mu);min-width:52px;text-align:right}
+#sel{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;justify-content:center;padding:8px}
+#msg,#cmsg{font-size:14px;white-space:pre-wrap}.bad{color:var(--no)}.good{color:var(--ok)}
+pre{white-space:pre-wrap;font-size:13px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px;overflow-x:auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.q b{display:block;margin-bottom:8px;font-weight:600}
+.tag{font-size:12px;color:var(--mu);margin-bottom:4px}
+.o{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin:6px 0}
+.o:hover:not(:disabled){border-color:var(--ac);background:var(--acb)}.o:disabled{cursor:default}
+.o.ok{background:var(--okb);border-color:var(--ok);color:var(--ok)}.o.no{background:var(--nob);border-color:var(--no);color:var(--no)}
+.f{font-size:14px;margin-top:6px;font-weight:600}.e{font-size:14px;color:var(--mu);margin-top:4px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0 24px}
+.r{text-align:center;padding:20px}.r h2{font-size:34px;margin:4px 0}
+.hide{display:none!important}
+</style></head><body><main>
+
+<section id="setup">
+<div class="top"><h1>McQuiz</h1><button class="s sm" id="th"></button></div>
+<div id="rs" class="card hide"><div id="rt"></div><div class="row"><button class="n" id="rb">Resume</button><button class="s" id="rd">Discard</button></div></div>
+<div class="tabs"><button id="b1" class="on">Catalog</button><button id="b2">Paste / file</button></div>
+<div class="card">
+<div class="row">
+<label>Per page <select id="pp"><option>5</option><option selected>10</option><option>20</option><option>50</option></select></label>
+<label><input type="checkbox" id="so" checked> Shuffle options</label>
+<label><input type="checkbox" id="sq"> Shuffle questions</label>
+</div>
+<div id="msg"></div>
+</div>
+
+<div id="t1">
+<div class="card">
+<input type="text" id="flt" placeholder="Filter sets…" style="width:100%;box-sizing:border-box;margin-bottom:8px">
+<div id="tree" class="mu">Loading catalog…</div>
+</div>
+<div id="sel" class="hide"><button class="n" id="gs"></button><button class="s" id="cs">Clear</button></div>
+<div class="card"><details><summary>Catalogs</summary>
+<div class="mu">Add another catalog (a JSON file hosted anywhere that allows cross-site loading). Saved in this browser only.</div>
+<div id="cl"></div>
+<div class="row"><input type="text" id="cu" placeholder="https://…/index.json" style="flex:1;min-width:200px"><button class="s" id="ca">Add</button></div>
+<div id="cmsg"></div></details></div>
+</div>
+
+<div id="t2" class="hide">
+<div class="card">
+<div>Paste MCQs or load a .txt / .json file.</div>
+<textarea id="ta" placeholder="Q: Your question&#10;A) Option&#10;B) Option&#10;C) Option&#10;D) Option&#10;Answer: B&#10;Explanation: optional"></textarea>
+<div class="row">
+<button class="s" id="fb">Choose file</button><input type="file" id="fi" accept=".txt,.md,.json,.csv" class="hide">
+<button class="s" id="sm">Load sample</button><button class="s" id="cl2">Clear</button>
+<button class="n" id="go">Start quiz</button>
+</div>
+<details><summary>Format blueprint</summary><pre id="bp"></pre>
+<div class="row"><button class="s" id="c1">Copy format guide</button><button class="s" id="c2">Copy AI prompt</button></div></details>
+</div>
+</div>
+</section>
+
+<section id="quiz" class="hide">
+<header><button class="s sm" id="bk">⏸ Pause</button><span id="sc"></span></header>
+<div class="mu" id="qt" style="margin-bottom:6px"></div>
+<div class="bar"><i id="pg"></i></div>
+<div id="qs"></div>
+<nav><button class="n" id="pv">← Prev</button><span id="pi"></span><button class="n" id="nx">Next →</button></nav>
+</section>
+</main>
+<script>
+/* Only edit this line if you move your main catalog. New sets are added in sets/index.json, not here. */
+const DEFAULT_CATALOGS=["sets/index.json"];
+
+const $=id=>document.getElementById(id);
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- theme ---------- */
+const MODES=["auto","light","dark"];let mode=LS.get("mcq_theme","auto");
+function theme(){const r=document.documentElement;mode==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",mode);$("th").textContent="Theme: "+mode}
+$("th").onclick=()=>{mode=MODES[(MODES.indexOf(mode)+1)%3];LS.set("mcq_theme",mode);theme()};theme();
+
+/* ---------- blueprint + parsing ---------- */
+const BP=`FORMAT (plain text, blank line between questions)
+
+Q: Question text
+A) First option
+B) Second option
+C) Third option
+D) Fourth option
+Answer: B
+Explanation: Optional, one line
+
+RULES
+1. Each question starts with "Q:" (or "Q1." / "1.").
+2. Options A) to F), one per line, 2 to 6 options.
+3. Exactly one "Answer:" line, a single letter present in the options.
+4. "Explanation:" is optional and shown after answering.
+5. No other text between questions.
+
+JSON ALSO ACCEPTED
+[{"q":"Question","options":["a","b","c","d"],"answer":"B","explanation":"optional"}]
+(answer = letter, 0-based index, or exact option text)`;
+const PROMPT=`Generate [N] multiple-choice questions on [TOPIC] for [LEVEL]. Output ONLY plain text, no markdown, no bold, no headings, no commentary. Use exactly this format with one blank line between questions:
+
+Q: Question text
+A) Option
+B) Option
+C) Option
+D) Option
+Answer: C
+Explanation: One short line
+
+Rules: exactly 4 options labelled A) to D); exactly one correct answer; vary the position of the correct letter; keep each question on one line; Answer must be a single letter; no blank lines inside a question.`;
+const SAMPLE=`Q: Foramen spinosum transmits which structure?
+A) Mandibular nerve
+B) Middle meningeal artery
+C) Maxillary nerve
+D) Internal carotid artery
+Answer: B
+Explanation: Foramen ovale carries V3; spinosum carries the middle meningeal artery.
+
+Q: Dangerous layer of the scalp is the
+A) Skin
+B) Galea aponeurotica
+C) Loose areolar tissue
+D) Pericranium
+Answer: C`;
+$("bp").textContent=BP;
+
+function parseText(t){
+ const qs=[],errs=[];let c=null,n=0;
+ const push=()=>{if(!c)return;n++;const g="Q"+n+": ",h=c.q.slice(0,40)+"…";
+  if(!c.q)errs.push(g+"missing question text");
+  else if(c.o.length<2)errs.push(g+"needs at least 2 options ("+h+")");
+  else if(!c.a)errs.push(g+"missing Answer line ("+h+")");
+  else if(!c.o.some(o=>o.l===c.a))errs.push(g+"answer "+c.a+" not among options ("+h+")");
+  else qs.push({q:c.q,o:c.o.map(o=>o.t),a:c.o.find(o=>o.l===c.a).t,e:c.e});
+  c=null};
+ for(const raw of t.split(/\r?\n/)){const s=raw.trim();if(!s)continue;let m;
+  if(m=s.match(/^(?:Q\s*\d*\s*[:.)]|\d+\s*[.)])\s*(.*)$/i)){push();c={q:m[1],o:[],a:"",e:""}}
+  else if(!c)continue;
+  else if(m=s.match(/^(?:answer|ans|correct)\s*[:=-]\s*\(?([A-F])\b/i))c.a=m[1].toUpperCase();
+  else if(m=s.match(/^(?:explanation|exp|why)\s*[:=-]\s*(.*)$/i))c.e=m[1];
+  else if(m=s.match(/^\(?([A-F])[).:]\s*(.+)$/i))c.o.push({l:m[1].toUpperCase(),t:m[2]});
+  else if(c.o.length)c.o[c.o.length-1].t+=" "+s;
+  else c.q+=(c.q?" ":"")+s}
+ push();return{qs,errs}}
+function parseJSON(t){
+ const d=JSON.parse(t),arr=Array.isArray(d)?d:(d.questions||[]),qs=[],errs=[];
+ arr.forEach((x,i)=>{const q=x.q||x.question,o=x.options||x.choices,a=x.answer,g="Q"+(i+1)+": ";
+  if(!q||!Array.isArray(o)||o.length<2){errs.push(g+"needs q and at least 2 options");return}
+  let ans;
+  if(typeof a==="number")ans=o[a];
+  else if(/^[A-F]$/i.test(String(a).trim()))ans=o[String(a).trim().toUpperCase().charCodeAt(0)-65];
+  else ans=o.find(z=>z===a);
+  if(!ans){errs.push(g+"answer not found in options");return}
+  qs.push({q:String(q),o:o.map(String),a:String(ans),e:x.explanation||x.exp||""})});
+ return{qs,errs}}
+function parse(t){t=t.trim();if(!t)return{qs:[],errs:["Nothing to load."]};
+ if(t[0]==="["||t[0]==="{"){try{return parseJSON(t)}catch(e){return{qs:[],errs:["Invalid JSON: "+e.message]}}}
+ return parseText(t)}
+
+function cp(text,btn){const ok=()=>{const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500)};
+ const fb=()=>{const x=document.createElement("textarea");x.value=text;document.body.appendChild(x);x.select();try{document.execCommand("copy");ok()}catch(e){}x.remove()};
+ try{navigator.clipboard.writeText(text).then(ok,fb)}catch(e){fb()}}
+$("c1").onclick=e=>cp(BP,e.target);$("c2").onclick=e=>cp(PROMPT,e.target);
+
+/* ---------- tabs ---------- */
+function tab(n){$("t1").classList.toggle("hide",n!==1);$("t2").classList.toggle("hide",n!==2);$("b1").classList.toggle("on",n===1);$("b2").classList.toggle("on",n===2)}
+$("b1").onclick=()=>tab(1);$("b2").onclick=()=>tab(2);
+
+/* ---------- catalogs ---------- */
+let SETS=[],SEL=new Set(),CERR=[];
+const qc=new URLSearchParams(location.search).get("catalog");
+const userCats=()=>LS.get("mcq_cats",[]);
+async function loadCat(url,seen){
+ const abs=new URL(url,location.href).href;if(seen.has(abs))return[];seen.add(abs);
+ const r=await fetch(abs,{cache:"no-cache"});if(!r.ok)throw new Error("Catalog "+r.status+": "+abs);
+ const d=await r.json(),arr=Array.isArray(d)?d:(d.sets||[]);
+ let out=arr.filter(s=>s.title&&s.file).map(s=>({title:s.title,module:s.module||"General",subject:s.subject||"",topic:s.topic||"",count:typeof s.count==="number"?s.count:null,url:new URL(s.file,abs).href}));
+ for(const c of (d.catalogs||[])){try{out=out.concat(await loadCat(new URL(c,abs).href,seen))}catch(e){CERR.push(e.message)}}
+ return out}
+async function reload(){
+ CERR=[];const seen=new Set(),all=[];
+ for(const u of [...(qc?[qc]:DEFAULT_CATALOGS),...userCats()]){try{all.push(...await loadCat(u,seen))}catch(e){CERR.push(e.message)}}
+ const u2=new Set();SETS=all.filter(s=>!u2.has(s.url)&&u2.add(s.url));SETS.forEach((s,i)=>s.id=i);SEL.clear();
+ renderCats();renderTree();selbar();
+ $("cmsg").className=CERR.length?"bad":"";$("cmsg").textContent=CERR.join("\n");
+ if(CERR.length&&!SETS.length)$("tree").textContent="Could not load the catalog. If you opened this file directly from disk, host it (GitHub Pages) or run a local server. Details under “Catalogs”.";
+ queueCounts()}
+function renderCats(){const b=$("cl");b.innerHTML="";
+ const add=(label,rm)=>{const d=document.createElement("div");d.className="row";const s=document.createElement("span");s.className="mu";s.textContent=label;d.appendChild(s);
+  if(rm){const x=document.createElement("button");x.className="s sm";x.textContent="Remove";x.onclick=rm;d.appendChild(x)}b.appendChild(d)};
+ (qc?[qc]:DEFAULT_CATALOGS).forEach(u=>add(u+(qc?" (from link)":" (default)")));
+ userCats().forEach(u=>add(u,()=>{LS.set("mcq_cats",userCats().filter(z=>z!==u));reload()}))}
+$("ca").onclick=()=>{const u=$("cu").value.trim();if(!u)return;const a=userCats();if(!a.includes(u))a.push(u);LS.set("mcq_cats",a);$("cu").value="";reload()};
+
+const cnt=s=>s.err?"⚠":s.count!=null?s.count+" Q":"…";
+function setCount(s){document.querySelectorAll('.ct[data-i="'+s.id+'"]').forEach(e=>{e.textContent=cnt(s);e.title=s.err||""})}
+function nsets(n){return n.s.length+Object.values(n.k).reduce((a,c)=>a+nsets(c),0)}
+function row(s){
+ const d=document.createElement("div");d.className="set";
+ const l=document.createElement("label"),c=document.createElement("input"),t=document.createElement("span");
+ c.type="checkbox";c.checked=SEL.has(s.id);c.onchange=()=>{c.checked?SEL.add(s.id):SEL.delete(s.id);selbar()};
+ t.textContent=s.title;l.append(c,t);
+ const n=document.createElement("span");n.className="ct";n.dataset.i=s.id;n.textContent=cnt(s);
+ const b=document.createElement("button");b.className="n sm";b.textContent="Start";b.onclick=()=>startSets([s]);
+ d.append(l,n,b);return d}
+function renderTree(){
+ const box=$("tree"),f=$("flt").value.trim().toLowerCase();box.innerHTML="";box.className="";
+ const list=SETS.filter(s=>!f||[s.title,s.module,s.subject,s.topic].join(" ").toLowerCase().includes(f));
+ if(!list.length){box.className="mu";box.textContent=SETS.length?"No match.":"No sets found.";return}
+ const tree={k:{},s:[]};
+ list.forEach(s=>{let n=tree;[s.module,s.subject,s.topic].filter(Boolean).forEach(p=>{n=n.k[p]=n.k[p]||{k:{},s:[]}});n.s.push(s)});
+ (function draw(n,el,d){
+  n.s.forEach(s=>el.appendChild(row(s)));
+  Object.keys(n.k).forEach(k=>{const dt=document.createElement("details"),sm=document.createElement("summary");
+   dt.open=!!f||d===0;sm.textContent=k+" · "+nsets(n.k[k]);dt.appendChild(sm);draw(n.k[k],dt,d+1);el.appendChild(dt)})})(tree,box,0)}
+$("flt").oninput=renderTree;
+function selbar(){const b=$("sel");b.classList.toggle("hide",!SEL.size);$("gs").textContent="Start selected ("+SEL.size+" "+(SEL.size===1?"set":"sets")+")"}
+$("cs").onclick=()=>{SEL.clear();renderTree();selbar()};
+$("gs").onclick=()=>startSets(SETS.filter(s=>SEL.has(s.id)));
+
+async function getSet(s){
+ if(s.qs)return s.qs;
+ try{const r=await fetch(s.url,{cache:"no-cache"});if(!r.ok)throw new Error("HTTP "+r.status);
+  const p=parse(await r.text());if(!p.qs.length)throw new Error(p.errs[0]||"empty set");
+  s.qs=p.qs;s.count=p.qs.length;s.err=p.errs.length?p.errs.length+" question(s) skipped":"";setCount(s);return s.qs}
+ catch(e){s.err=e.message;setCount(s);throw new Error(s.title+": "+e.message)}}
+function queueCounts(){const q=SETS.filter(s=>s.count===null);let i=0;
+ const w=async()=>{while(i<q.length){const s=q[i++];try{await getSet(s)}catch(e){}}};
+ for(let k=0;k<3;k++)w()}
+async function startSets(list){
+ const m=$("msg");m.className="mu";m.textContent="Loading…";
+ try{const all=[];for(const s of list){const qs=await getSet(s);qs.forEach(x=>all.push({...x,t:list.length>1?s.title:""}))}
+  m.textContent="";begin(all,list.length===1?list[0].title:list.length+" sets combined")}
+ catch(e){m.className="bad";m.textContent=e.message}}
+
+/* ---------- paste / file ---------- */
+$("sm").onclick=()=>{$("ta").value=SAMPLE;$("msg").textContent=""};
+$("cl2").onclick=()=>{$("ta").value="";$("msg").textContent="";LS.set("mcq_last","")};
+$("fb").onclick=()=>$("fi").click();
+$("fi").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{$("ta").value=r.result;$("msg").className="good";$("msg").textContent="Loaded "+f.name+". Press Start quiz."};r.readAsText(f);e.target.value=""};
+$("ta").value=LS.get("mcq_last","");
+$("go").onclick=()=>{const t=$("ta").value,r=parse(t),m=$("msg");
+ if(!r.qs.length){m.className="bad";m.textContent=r.errs.join("\n");return}
+ LS.set("mcq_last",t);m.className=r.errs.length?"bad":"";
+ m.textContent=r.errs.length?"Loaded "+r.qs.length+", skipped "+r.errs.length+":\n"+r.errs.slice(0,15).join("\n"):"";
+ begin(r.qs.map(x=>({...x,t:""})),"Pasted / file set")};
+
+/* ---------- quiz ---------- */
+let Q=[],page=0,done={},score=0,PER=10,TITLE="";
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const unfinished=s=>s&&s.Q&&Object.keys(s.done).length&&Object.keys(s.done).length<s.Q.length;
+function save(){LS.set("mcq_sess",{title:TITLE,Q,page,done,score,PER})}
+function sessCard(){const s=LS.get("mcq_sess",null),c=$("rs");
+ if(!unfinished(s)){c.classList.add("hide");return}
+ $("rt").textContent="Paused: "+s.title+" · "+Object.keys(s.done).length+" of "+s.Q.length+" answered";c.classList.remove("hide")}
+function openQuiz(){$("qt").textContent=TITLE+" · "+Q.length+" questions";
+ $("setup").classList.add("hide");$("quiz").classList.remove("hide");render();scrollTo(0,0)}
+function begin(qs,title){
+ if(unfinished(LS.get("mcq_sess",null))&&!confirm("You have a paused quiz. Starting a new one will replace it. Continue?"))return;
+ PER=+$("pp").value;const so=$("so").checked;
+ Q=qs.map(x=>({...x,o:so?shuf([...x.o]):x.o}));if($("sq").checked)shuf(Q);
+ page=0;done={};score=0;TITLE=title;openQuiz()}
+$("bk").onclick=()=>{save();$("quiz").classList.add("hide");$("setup").classList.remove("hide");sessCard()};
+$("rb").onclick=()=>{const s=LS.get("mcq_sess",null);if(!s)return;Q=s.Q;page=s.page;done=s.done;score=s.score;PER=s.PER;TITLE=s.title;openQuiz()};
+$("rd").onclick=()=>{LS.set("mcq_sess",null);sessCard()};
+sessCard();
+function render(){
+ const box=$("qs");box.innerHTML="";const tp=Math.ceil(Q.length/PER);
+ Q.slice(page*PER,page*PER+PER).forEach((x,k)=>{
+  const n=page*PER+k,d=document.createElement("div");d.className="q";
+  if(x.t){const g=document.createElement("div");g.className="tag";g.textContent=x.t;d.appendChild(g)}
+  const b=document.createElement("b");b.textContent=(n+1)+". "+x.q;d.appendChild(b);
+  const f=document.createElement("div");f.className="f";
+  const btns=x.o.map(t=>{const e=document.createElement("button");e.className="o";e.textContent=t;d.appendChild(e);return e});
+  const show=p=>{btns.forEach(e=>{e.disabled=true;if(e.textContent===x.a)e.classList.add("ok");else if(e.textContent===p)e.classList.add("no")});
+   f.textContent=p===x.a?"✓ Correct":"✗ Correct answer: "+x.a;f.style.color=p===x.a?"var(--ok)":"var(--no)";d.appendChild(f);
+   if(x.e){const e=document.createElement("div");e.className="e";e.textContent=x.e;d.appendChild(e)}};
+  btns.forEach(e=>e.onclick=()=>{done[n]=e.textContent;if(e.textContent===x.a)score++;show(e.textContent);stat()});
+  if(n in done)show(done[n]);
+  box.appendChild(d)});
+ if(page===tp-1&&Object.keys(done).length===Q.length){const r=document.createElement("div");r.className="card r";
+  r.innerHTML="<div>Final score</div><h2>"+score+" / "+Q.length+"</h2><div>"+Math.round(score/Q.length*100)+"%</div>";box.appendChild(r)}
+ $("pv").disabled=page===0;$("nx").disabled=page>=tp-1;$("pi").textContent="Page "+(page+1)+" / "+tp;stat()}
+function stat(){const c=Object.keys(done).length;c>=Q.length?LS.set("mcq_sess",null):save();$("sc").textContent="Score "+score+"/"+c+" · "+c+" of "+Q.length;$("pg").style.width=c/Q.length*100+"%"}
+$("pv").onclick=()=>{page--;render();scrollTo(0,0)};
+$("nx").onclick=()=>{page++;render();scrollTo(0,0)};
+
+reload();
+</script></body></html>
