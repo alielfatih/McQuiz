@@ -12,6 +12,9 @@ A free, static MCQ practice app. Pick a prebuilt set from a catalog, or paste or
 - **Pause and resume**: progress autosaves in your browser
 - **Options**: questions per page, shuffle options, shuffle questions
 - **Light and dark themes** (auto, light or dark), tuned for comfortable reading
+- **One question at a time** by default, with optional swipe navigation and automatic results after the last answer
+- **Exam mode** (answers revealed at the end), **Retry missed questions**, and **right-to-left** support
+- **Short guided tour** on first launch (replay it from Settings)
 
 ## Repo layout
 
