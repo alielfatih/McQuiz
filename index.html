@@ -64,8 +64,6 @@ details>summary{padding:8px 2px;font-weight:600}
 .ex{display:flex;gap:10px;margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--acb);font-size:.9rem}
 .ex svg{flex:none;margin-top:2px;color:var(--ac)}.ex small{display:block;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);font-size:.7rem;font-weight:700;margin-bottom:2px}
 .nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px max(16px,calc((100% - 720px)/2 + 16px)) calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd);z-index:6}
-#ac{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:7;display:flex;align-items:center;gap:12px;padding:6px 8px 6px 18px;background:var(--tx);color:var(--bg);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-#ac .s{min-height:36px;background:transparent;color:var(--bg);border-color:var(--mu)}
 [dir=rtl] .arr{display:inline-block;transform:scaleX(-1)}
 .c{text-align:center}.big{font-size:2.8rem;font-weight:700;line-height:1.1;margin:4px 0}.col{display:flex;flex-direction:column;gap:10px}
 .bsr{margin-top:12px}.bl{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}.bsr .bar{margin:4px 0 0}
@@ -90,6 +88,9 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 #tip.tt-mid{top:50%;bottom:auto;transform:translate(-50%,-50%)}
 #tip .tt{display:flex;justify-content:space-between;align-items:center}
 #tip .bar{margin:8px 0 2px}#tip .row2{margin-top:10px}#tuB{font-size:.95rem}
+[lang=ar] *{letter-spacing:0!important;text-transform:none!important}
+.guide>summary{display:flex;align-items:center;gap:10px;min-height:48px;padding:10px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--s2);font-weight:600;margin-top:12px}
+.guide[open]>summary{background:var(--acb);border-color:var(--ac)}.guide pre{margin-top:10px;text-align:left}
 .lnk{background:none;border:0;color:var(--ac);font-weight:600;min-height:40px;padding:0 4px}
 </style></head><body><main>
 
@@ -106,9 +107,9 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 </div>
 <div id="t2" class="hide"><div class="card">
 <div>Paste MCQs or load a .txt / .json file.</div>
-<textarea id="ta" aria-label="MCQs" placeholder="Q: Your question&#10;A) Option&#10;B) Option&#10;C) Option&#10;D) Option&#10;Answer: B&#10;Explanation: optional"></textarea>
+<textarea id="ta" dir="ltr" aria-label="MCQs" placeholder="Q: Your question&#10;A) Option&#10;B) Option&#10;C) Option&#10;D) Option&#10;Answer: B&#10;Explanation: optional"></textarea>
 <div class="row2"><button class="s" id="fb">Choose file</button><input type="file" id="fi" accept=".txt,.md,.json,.csv" class="hide"><button class="s" id="sm">Sample</button><button class="s" id="cl2">Clear</button><button class="n" id="go">Start quiz</button></div>
-<details style="margin: 1em 0em;"><summary class="s">Format guide - Create your own</summary><pre id="bp"></pre><div class="row2"><button class="s" id="c1">Copy format guide</button><button class="s" id="c2">Copy AI prompt</button></div></details>
+<details class="guide"><summary><span class="gt">How to create MCQs</span><span class="gc"></span></summary><pre id="bp" dir="ltr"></pre><div class="row2"><button class="s" id="c1">Copy guide</button><button class="s" id="c2">Copy AI prompt</button></div></details>
 </div></div>
 <div id="sel" class="hide"><button class="n" id="gs"></button></div>
 </section>
@@ -117,7 +118,6 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 <header class="qh"><button class="s" id="bk"></button><span id="sc" class="mu"></span></header>
 <div class="mu" id="qt"></div><div class="bar"><i id="pg"></i></div>
 <div id="qs"></div>
-<div id="ac" class="hide"><span>Opening results…</span><button class="s" id="acs">Stay</button></div>
 <nav class="nav"><button class="s" id="pv"><span class="arr">‹</span> Prev</button><span id="pi" class="mu"></span><button class="n" id="nx"></button></nav>
 </section>
 
@@ -136,6 +136,8 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 <div class="bar"><i id="tuP"></i></div>
 <div class="row2"><button class="s" id="tuBack">Back</button><button class="n" id="tuNext"></button></div>
 </div>
+
+<dialog id="fd"><div class="sh"><h2>All questions answered</h2><p class="mu" style="font-size:1rem;margin:8px 0 20px">Do you want to see your results now?</p><div class="row2"><button class="s" id="fdN">Not now</button><button class="n" id="fdY">Show results</button></div></div></dialog>
 
 <dialog id="sd"><div class="sh">
 <div class="top" style="margin:0"><h2>Settings</h2><button class="s ib" id="sx" aria-label="Close"></button></div>
@@ -158,25 +160,62 @@ const IC={gear:svg('<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><ci
 IC.chev=svg('<path d="M9 6l6 6-6 6"/>');$("gb").innerHTML=IC.gear;$("sx").innerHTML=IC.x;
 
 /* ---------- settings ---------- */
-let S={theme:"auto",size:"M",rtl:"auto",per:1,layout:"cards",so:true,sq:false,ex:true,exam:false,swipe:true,auto:true,...LS.get("mcq_s",{})};
+let S={theme:"auto",size:"M",rtl:"auto",per:1,layout:"cards",so:true,sq:false,ex:true,exam:false,swipe:true,auto:true,lang:"auto",ad:true,...LS.get("mcq_s",{})};
+const AR={
+"Paused":"متوقف مؤقتًا","Resume":"استئناف","Discard":"حذف","Catalog":"الفهرس","Paste / file":"لصق / ملف","Select":"تحديد","Done":"تم",
+"Filter sets…":"ابحث في مجموعات الأسئلة…","Filter sets":"ابحث في مجموعات الأسئلة","Switch cards or list":"التبديل بين البطاقات والقائمة",
+"Have your own questions?":"هل لديك أسئلتك الخاصة؟","Paste them or load a file.":"الصقها أو حمّل ملفًا.","Open Paste / file":"افتح «لصق / ملف»","Loading catalog…":"جارٍ تحميل الفهرس…",
+"Paste MCQs or load a .txt / .json file.":"الصق أسئلة الاختيار من متعدد أو حمّل ملف txt أو json.","MCQs":"الأسئلة","Choose file":"اختر ملفًا","Sample":"نموذج","Clear":"مسح","Start quiz":"ابدأ الاختبار","How to create MCQs":"كيفية إنشاء الأسئلة","Copy guide":"انسخ الدليل","Copy AI prompt":"انسخ أمر الذكاء الاصطناعي",
+"All questions answered":"تمت الإجابة على جميع الأسئلة","Do you want to see your results now?":"هل تريد عرض نتائجك الآن؟","Show results":"عرض النتائج","Not now":"ليس الآن","Prev":"السابق","Next":"التالي","Finish":"إنهاء","⏸ Pause":"⏸ إيقاف مؤقت","← Results":"العودة للنتائج",
+"Results":"النتائج","Final score":"النتيجة النهائية","By set":"حسب مجموعة الأسئلة","Review answers":"مراجعة الإجابات","Back to sets":"العودة إلى مجموعات الأسئلة",
+"Settings":"الإعدادات","Close":"إغلاق","Catalogs":"الفهارس","Add a catalog (a JSON file hosted anywhere that allows cross-site loading). Saved in this browser only.":"أضف فهرسًا (ملف JSON مستضاف في أي مكان يسمح بالتحميل من مواقع أخرى). يُحفظ في هذا المتصفح فقط.","Add":"إضافة","Remove":"إزالة","Catalog URL":"رابط الفهرس","Data":"البيانات","Saved quiz progress":"تقدّم الاختبار المحفوظ","Quick tutorial":"جولة تعريفية سريعة","Replay":"إعادة",
+"Skip tour":"تخطي الجولة","Back":"رجوع","Tutorial":"الجولة التعريفية",
+"Appearance":"المظهر","Theme":"السمة","Text size":"حجم النص","Direction":"الاتجاه","Language":"اللغة","Arabic digits":"الأرقام العربية","Quiz":"الاختبار","Questions per page":"عدد الأسئلة في الصفحة","Set layout":"عرض مجموعات الأسئلة","Shuffle options":"خلط الخيارات","Shuffle questions":"خلط الأسئلة","Show explanations":"إظهار الشروحات","Swipe to change question":"السحب للتنقل بين الأسئلة","Ask to show results when finished":"اقتراح عرض النتائج عند الانتهاء","Exam mode: answers at the end":"وضع الامتحان: الإجابات في النهاية",
+"auto":"تلقائي","light":"فاتح","dark":"داكن","S":"صغير","M":"متوسط","L":"كبير","ltr":"LTR","rtl":"RTL","cards":"بطاقات","list":"قائمة",
+"(default)":"(افتراضي)","(from link)":"(من الرابط)","Loading…":"جارٍ التحميل…","No match.":"لا توجد نتائج.","No sets found.":"لا توجد مجموعات أسئلة.",
+"Could not load the catalog. If you opened this file from disk, host it (GitHub Pages) or run a local server. Details in Settings › Catalogs.":"تعذّر تحميل الفهرس. إذا فتحت الملف من الجهاز مباشرة، فاستضفه (GitHub Pages) أو شغّل خادمًا محليًا. التفاصيل في الإعدادات ‹ الفهارس.",
+"Loaded {f}. Press Start quiz.":"تم تحميل {f}. اضغط «ابدأ الاختبار».","Loaded {a}, skipped {b}:":"تم تحميل {a} وتخطي {b}:","Pasted / file set":"مجموعة أسئلة ملصقة / ملف","Copied ✓":"تم النسخ ✓","Cleared ✓":"تم المسح ✓",
+"{a} of {b} answered":"تمت الإجابة على {a} من {b}","exam mode":"وضع الامتحان","You have a paused quiz. Starting a new one will replace it. Continue?":"لديك اختبار متوقف مؤقتًا. بدء اختبار جديد سيستبدله. هل تريد المتابعة؟",
+"Review":"مراجعة","Tutorial demo":"اختبار تجريبي","✓ Correct":"✓ صحيح","Skipped":"تم التخطي","Correct answer":"الإجابة الصحيحة","Explanation":"الشرح",
+"Page {a} / {b}":"صفحة {a} / {b}","Question {a} / {b}":"سؤال {a} / {b}","Answered {a} of {b}":"أُجيب على {a} من {b}","Score {a}/{b} · {c} of {d}":"النتيجة {a}/{b} · {c} من {d}",
+"{n} unanswered. Finish anyway?":"عدد الأسئلة غير المُجابة: {n}. هل تريد الإنهاء رغم ذلك؟","{p}% · {m} missed":"{p}٪ · الأسئلة غير الصحيحة: {m}","Retry missed questions ({m})":"إعادة الأسئلة الخاطئة ({m})","(retry)":"(إعادة)",
+"Step {a} of {b}":"الخطوة {a} من {b}",
+"Pick a set":"اختر مجموعة أسئلة","Tap a set to start it.":"المس مجموعة أسئلة لتبدأها.","Combine sets":"ادمج مجموعات الأسئلة","Select lets you tick several sets.":"«تحديد» يتيح لك اختيار عدة مجموعات أسئلة.",
+"Your own questions":"أسئلتك الخاصة","Paste or load them here.":"الصقها أو حمّلها هنا.","AI prompt":"أمر الذكاء الاصطناعي","Copy the guide, or a prompt to create sets.":"انسخ الدليل أو أمرًا لإنشاء مجموعات الأسئلة.",
+"Instant feedback":"تصحيح فوري","Tap an answer to see it right away.":"المس إجابة لترى النتيجة فورًا.","Move on":"انتقل","Swipe or tap Next. Pause is at the top.":"اسحب أو المس «التالي». زر الإيقاف في الأعلى.",
+"Retry only the questions you missed.":"أعد الأسئلة التي أخطأت فيها فقط.","Exam mode, theme and more live here.":"وضع الامتحان والسمة وغيرها هنا."};
+const LANG=(S.lang==="ar"||(S.lang!=="en"&&/^ar/i.test(navigator.language||"")))?"ar":"en";
+const AD="٠١٢٣٤٥٦٧٨٩";
+const num=n=>(LANG==="ar"&&S.ad)?String(n).replace(/\d/g,d=>AD[d]):String(n);
+function tr(k,p){const s=(LANG==="ar"&&AR[k])||k;return p?s.replace(/\{(\w+)\}/g,(_,x)=>x in p?(typeof p[x]==="number"?num(p[x]):p[x]):""):s}
+const qn=n=>LANG==="ar"?(n===1?"سؤال واحد":n===2?"سؤالان":(n%100>=3&&n%100<=10)?num(n)+" أسئلة":num(n)+" سؤال"):n+(n===1?" question":" questions");
+const sn=n=>LANG==="ar"?(n===1?"مجموعة أسئلة واحدة":n===2?"مجموعتا أسئلة":(n%100>=3&&n%100<=10)?num(n)+" مجموعات أسئلة":num(n)+" مجموعة أسئلة"):n+(n===1?" set":" sets");
+const OPTL=v=>v==="en"?"English":v==="ar"?"العربية":typeof v==="number"?num(v):tr(String(v));
+const ORIG=new WeakMap(),SKIP="#qs,#tree,#rt,#cl,pre,textarea,script,style";
+function trDom(){if(LANG!=="ar")return;
+ const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+ while(n=w.nextNode()){if(n.parentElement.closest(SKIP))continue;if(!ORIG.has(n))ORIG.set(n,n.nodeValue);
+  const o=ORIG.get(n),k=o.trim();if(k&&AR[k])n.nodeValue=o.replace(k,AR[k])}
+ document.querySelectorAll("[placeholder],[aria-label]").forEach(e=>{for(const a of ["placeholder","aria-label"]){
+  if(!e.hasAttribute(a))continue;const v=e.getAttribute(a);if(AR[v])e.setAttribute(a,AR[v])}})}
 const mq=matchMedia("(prefers-color-scheme: dark)");
 function applyS(){const d=S.theme==="auto"?mq.matches:S.theme==="dark",r=document.documentElement;
- r.dataset.theme=d?"dark":"light";r.style.fontSize={S:"15px",M:"17px",L:"19px"}[S.size]||"17px";r.dir=S.rtl==="rtl"?"rtl":"ltr"}
+ r.dataset.theme=d?"dark":"light";r.style.fontSize={S:"15px",M:"17px",L:"19px"}[S.size]||"17px";r.lang=LANG;r.dir=(S.rtl==="rtl"||(S.rtl==="auto"&&LANG==="ar"))?"rtl":"ltr"}
 mq.onchange=applyS;
-const SPEC=[["Appearance",[["Theme","theme",["auto","light","dark"]],["Text size","size",["S","M","L"]],["Direction","rtl",["auto","ltr","rtl"]]]],
-["Quiz",[["Questions per page","per",[1,5,10,20]],["Set layout","layout",["cards","list"]],["Shuffle options","so"],["Shuffle questions","sq"],["Show explanations","ex"],["Swipe to change question","swipe"],["Open results automatically","auto"],["Exam mode: answers at the end","exam"]]]];
+const SPEC=[["Appearance",[["Theme","theme",["auto","light","dark"]],["Text size","size",["S","M","L"]],["Direction","rtl",["auto","ltr","rtl"]],["Language","lang",["auto","en","ar"]],["Arabic digits","ad"]]],
+["Quiz",[["Questions per page","per",[1,5,10,20]],["Set layout","layout",["cards","list"]],["Shuffle options","so"],["Shuffle questions","sq"],["Show explanations","ex"],["Swipe to change question","swipe"],["Ask to show results when finished","auto"],["Exam mode: answers at the end","exam"]]]];
 function saveS(){LS.set("mcq_s",S);applyS();renderTree();buildS()}
 function buildS(){const b=$("sb");b.innerHTML="";
- SPEC.forEach(([h,rows])=>{const s=document.createElement("section"),t=document.createElement("h3");t.textContent=h;s.appendChild(t);
-  rows.forEach(([l,k,o])=>{const r=document.createElement("div");r.className="row";const lb=document.createElement("span");lb.textContent=l;r.appendChild(lb);
+ SPEC.forEach(([h,rows])=>{const s=document.createElement("section"),hh=document.createElement("h3");hh.textContent=tr(h);s.appendChild(hh);
+  rows.forEach(([l,k,o])=>{if(k==="ad"&&LANG!=="ar")return;const r=document.createElement("div");r.className="row";const lb=document.createElement("span");lb.textContent=tr(l);r.appendChild(lb);
    if(o){const g=document.createElement("div");g.className="seg";
-    o.forEach(v=>{const e=document.createElement("button");e.textContent=v;e.className=S[k]===v?"on":"";e.onclick=()=>{S[k]=v;saveS()};g.appendChild(e)});r.appendChild(g)}
-   else{const e=document.createElement("button");e.className="sw";e.setAttribute("role","switch");e.setAttribute("aria-label",l);e.setAttribute("aria-checked",String(!!S[k]));e.innerHTML="<i></i>";e.onclick=()=>{S[k]=!S[k];saveS()};r.appendChild(e)}
+    o.forEach(v=>{const e=document.createElement("button");e.textContent=OPTL(v);e.className=S[k]===v?"on":"";e.onclick=()=>{S[k]=v;if(k==="lang"){LS.set("mcq_s",S);location.reload();return}saveS()};g.appendChild(e)});r.appendChild(g)}
+   else{const e=document.createElement("button");e.className="sw";e.setAttribute("role","switch");e.setAttribute("aria-label",tr(l));e.setAttribute("aria-checked",String(!!S[k]));e.innerHTML="<i></i>";e.onclick=()=>{S[k]=!S[k];if(k==="ad"){LS.set("mcq_s",S);location.reload();return}saveS()};r.appendChild(e)}
    s.appendChild(r)});b.appendChild(s)})}
 $("gb").onclick=()=>{buildS();renderCats();$("sd").showModal()};
 $("sx").onclick=()=>$("sd").close();
 $("sd").onclick=e=>{if(e.target===$("sd"))$("sd").close()};
-$("cp").onclick=()=>{LS.set("mcq_sess",null);sessCard();$("cp").textContent="Cleared ✓"};
+$("cp").onclick=()=>{LS.set("mcq_sess",null);sessCard();$("cp").textContent=tr("Cleared ✓")};
 
 /* ---------- blueprint + parsing ---------- */
 const BP=`FORMAT (plain text, blank line between questions)
@@ -257,7 +296,7 @@ function parseJSON(t){
 function parse(t){t=t.trim();if(!t)return{qs:[],errs:["Nothing to load."]};
  if(t[0]==="["||t[0]==="{"){try{return parseJSON(t)}catch(e){return{qs:[],errs:["Invalid JSON: "+e.message]}}}
  return parseText(t)}
-function cp(text,btn){const ok=()=>{const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500)};
+function cp(text,btn){const ok=()=>{const o=btn.textContent;btn.textContent=tr("Copied ✓");setTimeout(()=>btn.textContent=o,1500)};
  const fb=()=>{const x=document.createElement("textarea");x.value=text;document.body.appendChild(x);x.select();try{document.execCommand("copy");ok()}catch(e){}x.remove()};
  try{navigator.clipboard.writeText(text).then(ok,fb)}catch(e){fb()}}
 $("c1").onclick=e=>cp(BP,e.target);$("c2").onclick=e=>cp(PROMPT,e.target);
@@ -284,15 +323,15 @@ async function reload(){
  const u2=new Set();SETS=all.filter(s=>!u2.has(s.url)&&u2.add(s.url));SETS.forEach((s,i)=>s.id=i);SEL.clear();
  renderCats();renderTree();selbar();
  $("cmsg").className=CERR.length?"bad":"";$("cmsg").textContent=CERR.join("\n");
- if(CERR.length&&!SETS.length)$("tree").textContent="Could not load the catalog. If you opened this file from disk, host it (GitHub Pages) or run a local server. Details in Settings › Catalogs.";
+ if(CERR.length&&!SETS.length)$("tree").textContent=tr("Could not load the catalog. If you opened this file from disk, host it (GitHub Pages) or run a local server. Details in Settings › Catalogs.");
  queueCounts()}
 function renderCats(){const b=$("cl");b.innerHTML="";
  const add=(label,rm)=>{const d=document.createElement("div"),s=document.createElement("span");s.className="mu";s.textContent=label;d.appendChild(s);
-  if(rm){const x=document.createElement("button");x.className="s";x.textContent="Remove";x.onclick=rm;d.appendChild(x)}b.appendChild(d)};
- (qc?[qc]:DEFAULT_CATALOGS).forEach(u=>add(u+(qc?" (from link)":" (default)")));
+  if(rm){const x=document.createElement("button");x.className="s";x.textContent=tr("Remove");x.onclick=rm;d.appendChild(x)}b.appendChild(d)};
+ (qc?[qc]:DEFAULT_CATALOGS).forEach(u=>add(u+" "+tr(qc?"(from link)":"(default)")));
  userCats().forEach(u=>add(u,()=>{LS.set("mcq_cats",userCats().filter(z=>z!==u));reload()}))}
 $("ca").onclick=()=>{const u=$("cu").value.trim();if(!u)return;const a=userCats();if(!a.includes(u))a.push(u);LS.set("mcq_cats",a);$("cu").value="";reload()};
-const cnt=s=>s.err?"⚠":s.count!=null?s.count+" Q":"…";
+const cnt=s=>s.err?"⚠":s.count!=null?(LANG==="ar"?qn(s.count):s.count+" Q"):"…";
 function setCount(s){document.querySelectorAll('.ct[data-i="'+s.id+'"]').forEach(e=>{e.textContent=cnt(s);e.title=s.err||""})}
 function nsets(n){return n.s.length+Object.values(n.k).reduce((a,c)=>a+nsets(c),0)}
 let OPENS=LS.get("mcq_open",{});if(typeof OPENS!=="object"||!OPENS)OPENS={};
@@ -314,8 +353,8 @@ function renderTree(){
  $("lv").innerHTML=S.layout==="cards"?IC.list:IC.grid;$("hint").classList.toggle("hide",SM);
  const list=SETS.filter(s=>!f||[s.title,s.module,s.subject,s.topic].join(" ").toLowerCase().includes(f));
  const nq=list.reduce((a,s)=>a+(s.count||0),0);
- $("sum").textContent=list.length?list.length+(list.length===1?" set":" sets")+(nq?" · "+nq+" questions":""):"";
- if(!list.length){box.className="mu";box.textContent=SETS.length?"No match.":"No sets found.";return}
+ $("sum").textContent=list.length?sn(list.length)+(nq?" · "+qn(nq):""):"";
+ if(!list.length){box.className="mu";box.textContent=tr(SETS.length?"No match.":"No sets found.");return}
  const tree={k:{},s:[]};
  list.forEach(s=>{let n=tree;[s.module,s.subject,s.topic].filter(Boolean).forEach(p=>{n=n.k[p]=n.k[p]||{k:{},s:[]}});n.s.push(s)});
  (function draw(n,el,d,p){
@@ -323,13 +362,13 @@ function renderTree(){
   Object.keys(n.k).forEach(k=>{const key=p+"/"+k,dt=document.createElement("details"),sm=document.createElement("summary");
    dt.className=d===0?"sec":"sub";dt.open=isOpen(key,d,f);
    sm.innerHTML='<span class="gt"></span><span class="gn"></span><span class="gc">'+IC.chev+'</span>';
-   sm.children[0].textContent=k;sm.children[1].textContent=nsets(n.k[k]);
+   sm.children[0].textContent=k;sm.children[1].textContent=num(nsets(n.k[k]));
    sm.onclick=()=>{OPENS[key]=!dt.open;LS.set("mcq_open",OPENS)};
    dt.appendChild(sm);draw(n.k[k],dt,d+1,key);el.appendChild(dt)})})(tree,box,0,"")}
 $("flt").oninput=renderTree;$("hb").onclick=()=>tab(2);
 $("lv").onclick=()=>{S.layout=S.layout==="cards"?"list":"cards";saveS()};
-$("sl").onclick=()=>{SM=!SM;SEL.clear();$("sl").textContent=SM?"Done":"Select";renderTree();selbar()};
-function selbar(){const on=SM&&SEL.size&&!$("t1").classList.contains("hide");$("sel").classList.toggle("hide",!on);$("gs").textContent="Start selected ("+SEL.size+" "+(SEL.size===1?"set":"sets")+")"}
+$("sl").onclick=()=>{SM=!SM;SEL.clear();$("sl").textContent=tr(SM?"Done":"Select");renderTree();selbar()};
+function selbar(){const on=SM&&SEL.size&&!$("t1").classList.contains("hide");$("sel").classList.toggle("hide",!on);$("gs").textContent=LANG==="ar"?"ابدأ المحدد ("+sn(SEL.size)+")":"Start selected ("+sn(SEL.size)+")"}
 $("gs").onclick=()=>startSets(SETS.filter(s=>SEL.has(s.id)));
 async function getSet(s){
  if(s.qs)return s.qs;
@@ -340,9 +379,9 @@ async function getSet(s){
 function queueCounts(){const q=SETS.filter(s=>s.count===null);let i=0;
  const w=async()=>{while(i<q.length){const s=q[i++];try{await getSet(s)}catch(e){}}};for(let k=0;k<3;k++)w()}
 async function startSets(list){
- const m=$("msg");m.className="mu";m.textContent="Loading…";
+ const m=$("msg");m.className="mu";m.textContent=tr("Loading…");
  try{const all=[];for(const s of list){const qs=await getSet(s);qs.forEach(x=>all.push({...x,t:list.length>1?s.title:""}))}
-  m.textContent="";begin(all,list.length===1?list[0].title:list.length+" sets combined")}
+  m.textContent="";begin(all,list.length===1?list[0].title:(LANG==="ar"?sn(list.length)+" مدمجة":list.length+" sets combined"))}
  catch(e){m.className="bad";m.textContent=e.message}}
 
 /* ---------- paste / file ---------- */
@@ -350,13 +389,13 @@ $("sm").onclick=()=>{$("ta").value=SAMPLE;$("msg").textContent=""};
 $("cl2").onclick=()=>{$("ta").value="";$("msg").textContent="";LS.set("mcq_paste","")};
 $("fb").onclick=()=>$("fi").click();
 $("fi").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
- r.onload=()=>{$("ta").value=r.result;$("msg").className="good";$("msg").textContent="Loaded "+f.name+". Press Start quiz."};r.readAsText(f);e.target.value=""};
+ r.onload=()=>{$("ta").value=r.result;$("msg").className="good";$("msg").textContent=tr("Loaded {f}. Press Start quiz.",{f:f.name})};r.readAsText(f);e.target.value=""};
 {const v=LS.get("mcq_paste","");$("ta").value=typeof v==="string"?v:""}
 $("go").onclick=()=>{const t=$("ta").value,r=parse(t),m=$("msg");
  if(!r.qs.length){m.className="bad";m.textContent=r.errs.join("\n");return}
  LS.set("mcq_paste",t);m.className=r.errs.length?"bad":"";
- m.textContent=r.errs.length?"Loaded "+r.qs.length+", skipped "+r.errs.length+":\n"+r.errs.slice(0,15).join("\n"):"";
- begin(r.qs.map(x=>({...x,t:""})),"Pasted / file set")};
+ m.textContent=r.errs.length?tr("Loaded {a}, skipped {b}:",{a:r.qs.length,b:r.errs.length})+"\n"+r.errs.slice(0,15).join("\n"):"";
+ begin(r.qs.map(x=>({...x,t:""})),tr("Pasted / file set"))};
 
 /* ---------- quiz ---------- */
 let Q=[],page=0,ans={},PER=1,TITLE="",EXAM=false,REV=false,DEMO=false,AT=null,autoDone=false;
@@ -366,29 +405,30 @@ const unf=s=>s&&Array.isArray(s.Q)&&s.ans&&Object.keys(s.ans).length>0;
 function save(){if(!REV&&!DEMO)LS.set("mcq_sess",{title:TITLE,Q,page,ans,PER,exam:EXAM})}
 function sessCard(){const s=LS.get("mcq_sess",null),c=$("rs");
  if(!unf(s)){c.classList.add("hide");return}
- const n=Object.keys(s.ans).length;$("rt").textContent=s.title;$("rn").textContent=n+" of "+s.Q.length+" answered"+(s.exam?" · exam mode":"");
+ const n=Object.keys(s.ans).length;$("rt").textContent=s.title;$("rn").textContent=tr("{a} of {b} answered",{a:n,b:s.Q.length})+(s.exam?" · "+tr("exam mode"):"");
  $("rbar").style.width=n/s.Q.length*100+"%";c.classList.remove("hide")}
 function begin(qs,title){
- if(unf(LS.get("mcq_sess",null))&&!confirm("You have a paused quiz. Starting a new one will replace it. Continue?"))return;
+ if(unf(LS.get("mcq_sess",null))&&!confirm(tr("You have a paused quiz. Starting a new one will replace it. Continue?")))return;
  PER=+S.per;EXAM=S.exam;REV=false;Q=qs.map(x=>({...x,o:S.so?shuf([...x.o]):x.o}));if(S.sq)shuf(Q);
  page=0;ans={};TITLE=title;openQuiz()}
-function openQuiz(){cancelAuto();autoDone=false;$("quiz").classList.toggle("one",PER===1);$("qt").textContent=(REV?"Review · ":"")+TITLE+" · "+Q.length+" questions"+(EXAM&&!REV?" · exam mode":"");
- $("bk").textContent=REV?"← Results":"⏸ Pause";view("quiz");render()}
+function openQuiz(){cancelAuto();autoDone=false;$("quiz").classList.toggle("one",PER===1);$("qt").textContent=(REV?tr("Review")+" · ":"")+TITLE+" · "+qn(Q.length)+(EXAM&&!REV?" · "+tr("exam mode"):"");
+ $("bk").textContent=tr(REV?"← Results":"⏸ Pause");view("quiz");render()}
 $("bk").onclick=()=>{cancelAuto();if(REV)return results();save();view("home");sessCard()};
 $("rb").onclick=()=>{const s=LS.get("mcq_sess",null);if(!s)return;Q=s.Q;page=s.page;ans=s.ans;PER=s.PER;TITLE=s.title;EXAM=s.exam;REV=false;openQuiz()};
 $("rd").onclick=()=>{LS.set("mcq_sess",null);sessCard()};
-const LET="ABCDEF";
-function cancelAuto(){clearTimeout(AT);AT=null;$("ac").classList.add("hide")}
+const LET=LANG==="ar"?"أبجدهو":"ABCDEF";
+function cancelAuto(){clearTimeout(AT);AT=null;if($("fd").open)$("fd").close()}
 function maybeAuto(){if(!S.auto||EXAM||REV||DEMO||autoDone||Object.keys(ans).length<Q.length)return;
- autoDone=true;$("ac").classList.remove("hide");AT=setTimeout(()=>{cancelAuto();LS.set("mcq_sess",null);results()},2000)}
-$("acs").onclick=cancelAuto;
+ autoDone=true;AT=setTimeout(()=>{AT=null;if(!$("quiz").classList.contains("hide")&&!REV&&!DEMO)$("fd").showModal()},600)}
+$("fdN").onclick=()=>$("fd").close();
+$("fdY").onclick=()=>{$("fd").close();LS.set("mcq_sess",null);results()};
 function render(){
  const box=$("qs");box.innerHTML="";const tp=Math.ceil(Q.length/PER),da=S.rtl==="auto"?"auto":null;
  $("quiz").classList.toggle("one",PER===1);
  Q.slice(page*PER,page*PER+PER).forEach((x,k)=>{
   const n=page*PER+k,d=document.createElement("div");d.className="q";
   if(x.t){const g=document.createElement("div");g.className="tag";g.textContent=x.t;d.appendChild(g)}
-  const h=document.createElement("b");h.textContent=(n+1)+". "+x.q;if(da)h.dir=da;d.appendChild(h);
+  const h=document.createElement("b");h.textContent=num(n+1)+". "+x.q;if(da)h.dir=da;d.appendChild(h);
   const btns=x.o.map((t,i)=>{const e=document.createElement("button"),l=document.createElement("span"),sp=document.createElement("span");
    e.dataset.v=t;l.className="lt";l.textContent=LET[i]||i+1;sp.className="tx";sp.textContent=t;if(da)sp.dir=da;e.append(l,sp);d.appendChild(e);return e});
   const fb=document.createElement("div");if(PER===1&&!EXAM&&!REV)fb.style.minHeight=(S.ex&&x.e?124:36)+"px";d.appendChild(fb);
@@ -397,16 +437,16 @@ function render(){
     if(lock){if(v===x.a){e.classList.add("ok");e.insertAdjacentHTML("beforeend","<i>"+IC.ck+"</i>")}else if(v===p){e.classList.add("no");e.insertAdjacentHTML("beforeend","<i>"+IC.x+"</i>")}}
     else if(EXAM&&v===p)e.classList.add("sel")});
    fb.innerHTML="";if(!lock)return;
-   const m=document.createElement("div"),ok=p===x.a;m.className="f "+(ok?"gd":"bd2");m.textContent=ok?"✓ Correct":(p===undefined?"Skipped · ":"✗ ")+"Correct answer: "+x.a;fb.appendChild(m);
+   const m=document.createElement("div"),ok=p===x.a;m.className="f "+(ok?"gd":"bd2");m.textContent=ok?tr("✓ Correct"):(p===undefined?tr("Skipped")+" · ":"✗ ")+tr("Correct answer")+": "+x.a;fb.appendChild(m);
    if(S.ex&&x.e){const ex=document.createElement("div"),w=document.createElement("div"),sm=document.createElement("small"),tx=document.createElement("span");
-    ex.className="ex";ex.innerHTML=IC.bulb;sm.textContent="Explanation";tx.textContent=x.e;if(da)tx.dir=da;w.append(sm,tx);ex.appendChild(w);fb.appendChild(ex)}};
+    ex.className="ex";ex.innerHTML=IC.bulb;sm.textContent=tr("Explanation");tx.textContent=x.e;if(da)tx.dir=da;w.append(sm,tx);ex.appendChild(w);fb.appendChild(ex)}};
   btns.forEach(e=>e.onclick=()=>{ans[n]=e.dataset.v;paint();stat();if(!EXAM)maybeAuto()});
   paint();box.appendChild(d)});
  const last=page>=tp-1;
- $("pi").textContent=PER===1?"Question "+(page+1)+" / "+Q.length:"Page "+(page+1)+" / "+tp;
- $("pv").disabled=page===0;$("nx").innerHTML=last?(REV?"Done":"Finish"):'Next <span class="arr">›</span>';stat()}
+ $("pi").textContent=tr(PER===1?"Question {a} / {b}":"Page {a} / {b}",{a:page+1,b:PER===1?Q.length:tp});
+ $("pv").disabled=page===0;$("nx").innerHTML=last?tr(REV?"Done":"Finish"):tr("Next")+' <span class="arr">›</span>';stat()}
 function stat(){const c=Object.keys(ans).length;
- $("sc").textContent=REV?"Review":EXAM?"Answered "+c+" of "+Q.length:"Score "+score()+"/"+c+" · "+c+" of "+Q.length;
+ $("sc").textContent=REV?tr("Review"):EXAM?tr("Answered {a} of {b}",{a:c,b:Q.length}):tr("Score {a}/{b} · {c} of {d}",{a:score(),b:c,c:c,d:Q.length});
  $("pg").style.width=Math.min(100,(REV?(page+1)*PER:c)/Q.length*100)+"%";save()}
 function go2(d){cancelAuto();page+=d;render();scrollTo(0,0);
  const rtl=document.documentElement.dir==="rtl";
@@ -414,7 +454,7 @@ function go2(d){cancelAuto();page+=d;render();scrollTo(0,0);
 $("pv").onclick=()=>{if(page>0)go2(-1)};
 $("nx").onclick=()=>{if(page<Math.ceil(Q.length/PER)-1){go2(1);return}
  if(REV)return results();
- const un=Q.length-Object.keys(ans).length;if(un&&!confirm(un+" unanswered. Finish anyway?"))return;
+ const un=Q.length-Object.keys(ans).length;if(un&&!confirm(tr("{n} unanswered. Finish anyway?",{n:un})))return;
  LS.set("mcq_sess",null);results()};
 let sx=0,sy=0,sOK=false;
 $("quiz").addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;sOK=e.touches.length===1&&sx>24&&sx<innerWidth-24},{passive:true});
@@ -424,15 +464,15 @@ $("quiz").addEventListener("touchend",e=>{if(!sOK||!S.swipe||ACTIVE||$("quiz").c
  if(nx&&page<tp-1)go2(1);else if(!nx&&page>0)go2(-1)},{passive:true});
 function results(){cancelAuto();
  REV=false;view("done");const s=score(),m=Q.length-s;
- $("rsc").textContent=s+" / "+Q.length;$("rpc").textContent=Math.round(s/Q.length*100)+"% · "+m+" missed";
+ $("rsc").textContent=num(s)+" / "+num(Q.length);$("rpc").textContent=tr("{p}% · {m} missed",{p:Math.round(s/Q.length*100),m:m});
  const bs=$("bs");bs.innerHTML="";const g={};
  Q.forEach((x,i)=>{if(x.t){const r=g[x.t]=g[x.t]||[0,0];r[1]++;if(ans[i]===x.a)r[0]++}});
  const ks=Object.keys(g);$("bsw").classList.toggle("hide",!ks.length);
  ks.forEach(k=>{const [a,b]=g[k],p=Math.round(a/b*100),d=document.createElement("div");d.className="bsr";
   d.innerHTML='<div class="bl"><span></span><span class="mu"></span></div><div class="bar"><i></i></div>';
-  d.querySelector("span").textContent=k;d.querySelector(".mu").textContent=a+"/"+b+" · "+p+"%";d.querySelector("i").style.width=p+"%";bs.appendChild(d)});
- $("rr").textContent="Retry missed questions ("+m+")";$("rr").classList.toggle("hide",!m)}
-$("rr").onclick=()=>begin(Q.filter((x,i)=>ans[i]!==x.a).map(x=>({...x})),TITLE.replace(/ \(retry\)$/,"")+" (retry)");
+  d.querySelector("span").textContent=k;d.querySelector(".mu").textContent=num(a)+"/"+num(b)+" · "+num(p)+(LANG==="ar"?"٪":"%");d.querySelector("i").style.width=p+"%";bs.appendChild(d)});
+ $("rr").textContent=tr("Retry missed questions ({m})",{m:m});$("rr").classList.toggle("hide",!m)}
+$("rr").onclick=()=>begin(Q.filter((x,i)=>ans[i]!==x.a).map(x=>({...x})),TITLE.replace(/ \((retry|إعادة)\)$/,"")+" "+tr("(retry)"));
 $("rv").onclick=()=>{REV=true;page=0;openQuiz()};
 $("rh").onclick=()=>{view("home");sessCard()};
 
@@ -443,7 +483,7 @@ const TOUR=[
  {c:"home",t:"Pick a set",b:"Tap a set to start it.",el:()=>$q(".set",$("tree"))},
  {c:"select",t:"Combine sets",b:"Select lets you tick several sets.",el:()=>$("sl")},
  {c:"paste",t:"Your own questions",b:"Paste or load them here.",el:()=>$("ta")},
- {c:"paste2",t:"AI prompt",b:"Copy the format, or a prompt to generate sets.",el:()=>$q(".row2",$q("details",$("t2")))},
+ {c:"paste2",t:"AI prompt",b:"Copy the guide, or a prompt to create sets.",el:()=>$q(".row2",$q("details",$("t2")))},
  {c:"answered",t:"Instant feedback",b:"Tap an answer to see it right away.",el:()=>[$q(".f",$("qs")),$q(".ex",$("qs"))]},
  {c:"answered",t:"Move on",b:"Swipe or tap Next. Pause is at the top.",el:()=>$q(".nav")},
  {c:"result",t:"Results",b:"Retry only the questions you missed.",el:()=>$q(".col",$("done"))},
@@ -456,13 +496,13 @@ function paintSpot(r){const p=6,l=Math.max(4,r.left-p),t=Math.max(4,r.top-p),rr=
 function ctx(c){
  $("sd").close();cancelAuto();$q("details",$("t2")).open=c==="paste2";
  if(c==="answered"||c==="result"){
-  DEMO=true;Q=parseText(SAMPLE).qs.map(x=>({...x,t:""}));PER=1;EXAM=false;REV=false;page=0;ans={};TITLE="Tutorial demo";
+  DEMO=true;Q=parseText(SAMPLE).qs.map(x=>({...x,t:""}));PER=1;EXAM=false;REV=false;page=0;ans={};TITLE=tr("Tutorial demo");
   if(c==="result"){ans={0:Q[0].o.find(o=>o!==Q[0].a),1:Q[1].a};results()}
   else{openQuiz();[...document.querySelectorAll("#qs .o")].find(e=>e.dataset.v!==Q[0].a).click()}
   return}
  DEMO=false;Q=[];ans={};SETS=DSETS;view("home");
  SM=c==="select";SEL=new Set();if(SM)SEL.add(DSETS[0].id);
- $("sl").textContent=SM?"Done":"Select";renderTree();tab(c==="paste"||c==="paste2"?2:1)}
+ $("sl").textContent=tr(SM?"Done":"Select");renderTree();tab(c==="paste"||c==="paste2"?2:1)}
 function arrange(){if(!ACTIVE)return;
  const s=TOUR[ti],el=s.el&&s.el(),tip=$("tip"),sp=$("spot"),tb=$("tblock");
  if(!list(el).length){sp.classList.add("hide");tb.classList.add("dim");tip.className="tt-mid";return}
@@ -476,19 +516,19 @@ function arrange(){if(!ACTIVE)return;
 function track(){if(!ACTIVE)return;const el=TOUR[ti].el&&TOUR[ti].el();
  if(list(el).length&&!$("spot").classList.contains("hide"))paintSpot(rectOf(el));requestAnimationFrame(track)}
 function go(i){ti=i;const s=TOUR[i],last=i===TOUR.length-1;ctx(s.c);
- $("tuN").textContent="Step "+(i+1)+" of "+TOUR.length;$("tuT").textContent=s.t;$("tuB").textContent=s.b;
- $("tuP").style.width=(i+1)/TOUR.length*100+"%";$("tuBack").disabled=i===0;$("tuSkip").classList.toggle("hide",last);$("tuNext").textContent=last?"Done":"Next";
+ $("tuN").textContent=tr("Step {a} of {b}",{a:i+1,b:TOUR.length});$("tuT").textContent=tr(s.t);$("tuB").textContent=tr(s.b);
+ $("tuP").style.width=(i+1)/TOUR.length*100+"%";$("tuBack").disabled=i===0;$("tuSkip").classList.toggle("hide",last);$("tuNext").textContent=tr(last?"Done":"Next");
  $("tblock").classList.remove("hide");$("tip").classList.remove("hide");
  requestAnimationFrame(()=>{arrange();$("tuNext").focus({preventScroll:true})});setTimeout(arrange,250)}
 function tour(){snap={sets:SETS,sm:SM,sel:[...SEL],tab:$("t1").classList.contains("hide")?2:1};ACTIVE=true;go(0);track()}
 function endTour(){ACTIVE=false;["tblock","spot","tip"].forEach(i=>$(i).classList.add("hide"));ctx("home");
- SETS=snap.sets;SM=snap.sm;SEL=new Set(snap.sel);$("sl").textContent=SM?"Done":"Select";renderTree();tab(snap.tab);sessCard();LS.set("mcq_tut",1)}
+ SETS=snap.sets;SM=snap.sm;SEL=new Set(snap.sel);$("sl").textContent=tr(SM?"Done":"Select");renderTree();tab(snap.tab);sessCard();LS.set("mcq_tut",1)}
 $("tuNext").onclick=()=>ti<TOUR.length-1?go(ti+1):endTour();
 $("tuBack").onclick=()=>go(ti-1);$("tuSkip").onclick=endTour;
 addEventListener("keydown",e=>{if(ACTIVE&&e.key==="Escape"){e.preventDefault();endTour()}});
 addEventListener("resize",arrange);
 $("tr").onclick=()=>{$("sd").close();tour()};
 
-applyS();buildS();sessCard();
+document.querySelector(".guide .gc").innerHTML=IC.chev;applyS();trDom();buildS();sessCard();
 reload().then(()=>{if(!LS.get("mcq_tut",0))tour()});
 </script></body></html>
