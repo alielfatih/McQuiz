@@ -188,8 +188,8 @@ const LANG=(S.lang==="ar"||(S.lang!=="en"&&/^ar/i.test(navigator.language||"")))
 const AD="٠١٢٣٤٥٦٧٨٩";
 const num=n=>(LANG==="ar"&&S.ad)?String(n).replace(/\d/g,d=>AD[d]):String(n);
 function tr(k,p){const s=(LANG==="ar"&&AR[k])||k;return p?s.replace(/\{(\w+)\}/g,(_,x)=>x in p?(typeof p[x]==="number"?num(p[x]):p[x]):""):s}
-const qn=n=>LANG==="ar"?(n===1?"سؤال واحد":n===2?"سؤالان":(n%100>=3&&n%100<=10)?num(n)+" أسئلة":num(n)+" سؤال"):n+(n===1?" question":" questions");
-const sn=n=>LANG==="ar"?(n===1?"مجموعة أسئلة واحدة":n===2?"مجموعتا أسئلة":(n%100>=3&&n%100<=10)?num(n)+" مجموعات أسئلة":num(n)+" مجموعة أسئلة"):n+(n===1?" set":" sets");
+const qn=n=>LANG==="ar"?(n===1?"سؤال واحد":n===2?"سؤالان":(n>=3&&n<=10)?num(n)+" أسئلة":num(n)+" سؤال"):n+(n===1?" question":" questions");
+const sn=n=>LANG==="ar"?(n===1?"مجموعة أسئلة واحدة":n===2?"مجموعتا أسئلة":(n>=3&&n<=10)?num(n)+" مجموعات أسئلة":num(n)+" مجموعة أسئلة"):n+(n===1?" set":" sets");
 const OPTL=v=>v==="en"?"English":v==="ar"?"العربية":typeof v==="number"?num(v):tr(String(v));
 const ORIG=new WeakMap(),SKIP="#qs,#tree,#rt,#cl,pre,textarea,script,style";
 function trDom(){if(LANG!=="ar")return;
