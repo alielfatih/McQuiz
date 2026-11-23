@@ -6,7 +6,7 @@ A free, static MCQ practice app. Pick a prebuilt set from a catalog, or paste or
 
 - **Catalog of sets**, grouped by module, then optionally subject, then optionally topic, with a question count per set
 - **One set at a time by default**, or tick several sets and combine them into one quiz
-- **Paste / file tab** to use your own MCQs (`.txt` or `.json`)
+- **Add questions tab** to use your own MCQs (`.txt` or `.json`)
 - **Multiple catalogs**, including ones you add from the page
 - **Instant feedback** after each answer, with optional explanations
 - **Pause and resume**: progress autosaves in your browser
@@ -14,6 +14,10 @@ A free, static MCQ practice app. Pick a prebuilt set from a catalog, or paste or
 - **Light and dark themes** (auto, light or dark), tuned for comfortable reading
 - **One question at a time** by default, with optional swipe navigation and a prompt to show your results after the last answer
 - **Arabic interface** (Settings → Language, or automatic from your browser language) with Arabic-Indic digits. The format blueprint and AI prompt stay in English because the loader reads those keywords
+- **Sessions**: optionally split a set into several sessions (by size or by number). Questions are mixed randomly once, then stay fixed in their session until you finish it or start over
+- **Keyboard navigation** for laptops (press ? in the app for the list)
+- **Timer** (off by default): per question (default 10 seconds) or for the whole quiz, with a ring that drains from green to red. With a per-question timer you choose what happens when time runs out (wait for you, or move on after a delay). Exam mode and timed quizzes cannot be paused or resumed; the Pause button becomes Quit
+- **Several paused quizzes** at once (one per set or session, kept in your browser; you choose how many to keep in Settings). Exam mode and timed quizzes cannot be paused
 - **Exam mode** (answers revealed at the end), **Retry missed questions**, and **right-to-left** support
 - **Short guided tour** on first launch (replay it from Settings)
 
@@ -96,7 +100,7 @@ JSON is also accepted:
 
 ## Generating questions with AI
 
-The **Paste / file** tab has a **Copy AI prompt** button. Paste that prompt into any AI assistant, fill in the count, topic and level, and paste the reply back into the page or save it as a `.txt` set.
+The **Add questions** tab has a **Copy AI prompt** button. Paste that prompt into any AI assistant, fill in the count, topic and level, and paste the reply back into the page or save it as a `.txt` set.
 
 ## Multiple catalogs
 
@@ -112,7 +116,7 @@ A raw URL from a **private** repo will not load, and a GitHub Pages site is publ
 
 - Host them in a **secret gist** and use its raw URL as `file`. Secret gists are unlisted, not private: anyone with the link can read them.
 - Put those entries in a separate catalog (also a secret gist) and add it from the page, so the link isn't in your public repo.
-- Or just use the **Paste / file** tab, which never uploads anything.
+- Or just use the **Add questions** tab, which never uploads anything.
 
 ## Notes and limits
 
@@ -123,3 +127,16 @@ A raw URL from a **private** repo will not load, and a GitHub Pages site is publ
 ## License
 
 [MIT](LICENSE). This covers the app code. Question sets you add are your own responsibility and may be under different terms.
+
+## Offline sets
+
+In Settings → Offline, tick a module or individual sets to save them on your device (works for sets hosted elsewhere, such as gists). Catalog lists are kept automatically so the home screen opens offline. Saved sets refresh whenever you open them online, or with "Update saved sets". Saving needs HTTPS.
+
+## Install as an app
+
+McQuiz is an installable web app (PWA). Upload `manifest.webmanifest`, `sw.js` and the `icons/` folder next to `index.html`, then open the site over HTTPS (GitHub Pages is).
+
+- **Android (Chrome or Firefox):** browser menu → Install app (or Add to Home screen).
+- **iPhone (Safari):** Share → Add to Home Screen.
+
+After the first visit, the app and the sets on the same site open offline. Catalogs or sets hosted elsewhere (such as gists) are not cached. The service worker only registers on HTTPS or localhost, so it will not run from a plain `http://` address on your local network.

@@ -3,12 +3,20 @@
   "catalogs": [],
   "sets": [
     {
-      "title": "Head & Neck: full revision set",
-      "module": "Head & Neck",
-      "subject": "Anatomy",
+      "title": "Intestinal worms",
+      "module": "Tropical Medicine",
+      "subject": "AI made",
       "topic": "",
-      "file": "head-neck/anatomy/head_neck_100.txt",
-      "count": 100
+      "file": "https://gist.github.com/alielfatih/ebef9324321560ae44bcaa36f27ed261/raw/3556716444f648d20cfc3a4bf697f75aede87394/instestinal.txt",
+      "count": 37
+    }
+    ,{
+      "title": "Preventions & Control",
+      "module": "Tropical Medicine",
+      "subject": "AI made",
+      "topic": "",
+      "file": "https://gist.github.com/alielfatih/ea5c1b9170c4c7d30763fce43f46a707/raw/e32ae99f02ffb7482443f85bdbd3019cfd6b9888/pre-control.txt",
+      "count": 30
     }
   ]
 }
