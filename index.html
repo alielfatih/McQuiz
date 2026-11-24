@@ -521,7 +521,7 @@ async function offDel(url){if(!offOK())return;try{const c=await caches.open(OFFC
 async function loadCat(url,seen){
  const abs=new URL(url,location.href).href;if(seen.has(abs))return[];seen.add(abs);
  let txt;
- try{const r=await fetch(abs,{cache:"default", signal: AbortSignal.timeout(4000)});if(!r.ok)throw new Error("Catalog "+r.status+": "+abs);txt=await r.text();offPut(abs,txt)}
+ try{const r=await fetch(abs,{cache:"no-cache"});if(!r.ok)throw new Error("fail");txt=await r.text();offPut(abs,txt);OFFLINE_USED=false}
  catch(e){txt=await offGet(abs);if(txt===null)throw e;OFFLINE_USED=true}
  const d=JSON.parse(txt),arr=Array.isArray(d)?d:(d.sets||[]);
  let out=arr.filter(s=>s.title&&s.file).map(s=>({title:s.title,module:s.module||"General",subject:s.subject||"",topic:s.topic||"",count:typeof s.count==="number"?s.count:null,url:new URL(s.file,abs).href}));
@@ -1011,4 +1011,5 @@ document.querySelector(".guide .gc").innerHTML=IC.chev;migratePaused();applyS();
 reload().then(()=>{if(!LS.get("mcq_tut",0))tour()});
 /* ---------- installable app (service worker) ---------- */
 if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})});
+addEventListener("online",()=>{if(!LOADING)reload()});
 </script></body></html> 

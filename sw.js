@@ -119,15 +119,15 @@ self.addEventListener("fetch", e => {
   }
 
   // --- Set files: network-first (fresh), fallback to mcquiz-sets (opt-in) ---
-  if (isJSON) {
+    if (isJSON) {
     e.respondWith((async () => {
       try {
-        const res = await fetch(req, { cache: "no-cache" }); // always check for set updates
+        const res = await fetch(req, { cache: "no-cache" });
+        if (!res.ok) throw new Error("fail");
         return res;
       } catch (err) {
         for (const name of [SETS_CACHE, RUNTIME_CACHE]) {
-          const cache = await caches.open(name);
-          const hit = await cache.match(req, { ignoreSearch: false, ignoreVary: true });
+          const hit = await (await caches.open(name)).match(req, { ignoreVary: true });
           if (hit) return hit;
         }
         return Response.error();
