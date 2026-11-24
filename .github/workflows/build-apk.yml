@@ -27,11 +27,17 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install Bubblewrap & Build APK
         run: |
           npm install -g @bubblewrap/cli
-          # Run in the root directory where twa-manifest.json lives
+          
+          # Tell Bubblewrap where GitHub's pre-installed JDK and Android SDK are
           bubblewrap build --skipPwaValidation \
+            --jdkPath="$JAVA_HOME" \
+            --androidSdkPath="$ANDROID_HOME" \
             --signingKeyPath=app/release.keystore \
             --signingKeyAlias=${{ secrets.KEY_ALIAS }} \
             --signingKeyPassword=${{ secrets.KEY_PASSWORD }} \
