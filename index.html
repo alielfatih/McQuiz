@@ -9,8 +9,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <style>
-:root{color-scheme:light;--bg:#f6f4ef;--card:#fffdf9;--s2:#efece4;--tx:#26292f;--mu:#646a73;--bd:#e4dfd3;--ac:#3f6fb5;--acb:#e7eef9;--acf:#fff;--ok:#2d7a4d;--okb:#e2f1e7;--no:#a63f39;--nob:#f8e3e0;--sh:0 1px 2px rgba(30,35,45,.05),0 4px 14px rgba(30,35,45,.04);--dimbg:rgba(8,12,18,.45)}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#16191e;--card:#1f232a;--s2:#2a2f38;--tx:#dde0e5;--mu:#98a0ab;--bd:#323843;--ac:#7ba3dc;--acb:#25303f;--acf:#12161b;--ok:#8fd0a6;--okb:#1d3828;--no:#e5a29c;--nob:#482826;--sh:none;--dimbg:rgba(0,0,0,.65)}
+:root{color-scheme:light;--bd2:#908b80;--gold:#8a661a;--goldr:#bc892b;--bg:#f6f4ef;--card:#fffdf9;--s2:#efece4;--tx:#26292f;--mu:#646a73;--bd:#e4dfd3;--ac:#3f6fb5;--acb:#e7eef9;--acf:#fff;--ok:#2d7a4d;--okb:#e2f1e7;--no:#a63f39;--nob:#f8e3e0;--sh:0 1px 2px rgba(30,35,45,.05),0 4px 14px rgba(30,35,45,.04);--dimbg:rgba(8,12,18,.45)}
+:root[data-theme="dark"]{color-scheme:dark;--bd2:#636e7e;--gold:#e0bb62;--goldr:#d9a843;--bg:#16191e;--card:#1f232a;--s2:#2a2f38;--tx:#dde0e5;--mu:#98a0ab;--bd:#323843;--ac:#7ba3dc;--acb:#25303f;--acf:#12161b;--ok:#8fd0a6;--okb:#1d3828;--no:#e5a29c;--nob:#482826;--sh:none;--dimbg:rgba(0,0,0,.65)}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font:1rem/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px)}
@@ -71,7 +71,7 @@ details>summary{padding:8px 2px;font-weight:600}
 #quiz.one #qs{display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 270px);min-height:calc(100dvh - 270px)}
 .q{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
 .q>b{display:block;margin-bottom:12px;font-size:1.1rem;line-height:1.4}.tag{font-size:.75rem;color:var(--mu);margin-bottom:4px}
-.o{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;text-align:start;background:var(--card);border:1.5px solid var(--bd);border-radius:14px;padding:8px 12px;margin:10px 0;color:var(--tx)}
+.o{display:flex;align-items:flex-start;gap:12px;width:100%;min-height:54px;text-align:start;background:var(--card);border:1.5px solid var(--bd);border-radius:14px;padding:11px 12px;margin:10px 0;color:var(--tx)}
 .lt{flex:none;width:30px;height:30px;border-radius:50%;background:var(--s2);display:grid;place-items:center;font-size:.85rem;font-weight:700;color:var(--mu)}.o .tx{flex:1}
 .o:hover:not(:disabled){border-color:var(--ac);background:var(--acb)}.o:disabled{cursor:default;color:var(--tx)}.o i{display:grid;flex:none}
 .o.sel{border-color:var(--ac);background:var(--acb);font-weight:600}.o.sel .lt{background:var(--ac);color:var(--acf)}
@@ -94,10 +94,10 @@ details>summary{padding:8px 2px;font-weight:600}
 .ring circle{fill:none;stroke-width:12;stroke-linecap:round}
 .ring .bg{stroke:var(--s2)}
 .ring .fg{stroke:var(--ok);transition:stroke-dashoffset .6s ease, stroke .3s}
-.ring.mid .fg{stroke:#c9932f}.ring.low .fg{stroke:var(--no)}
+.ring.mid .fg{stroke:var(--goldr)}.ring.low .fg{stroke:var(--no)}
 .ring-txt{font-weight:700;font-size:1.4rem;fill:var(--tx)}
 .tier{font-size:1.05rem;font-weight:600;margin:2px 0 4px}
-.tier.perfect{color:var(--ok)}.tier.good{color:var(--ok)}.tier.mid{color:#a37a1f}.tier.low{color:var(--no)}
+.tier.perfect{color:var(--ok)}.tier.good{color:var(--ok)}.tier.mid{color:var(--gold)}.tier.low{color:var(--no)}
 /* === PATCH: timer centered under progress === */
 #tm{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 16px 0;--th:130}
 .tring{width:48px;height:48px;flex:none}
@@ -128,7 +128,7 @@ dialog::backdrop{background:var(--dimbg)}
 .sh h2{margin:0;font-size:1.3rem}.sh h3{margin:32px 0 6px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
 .row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 16px;min-height:60px;padding:10px 0;border-bottom:1px solid var(--bd)}
 .seg{display:flex;gap:2px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:3px}
-.seg button{min-height:38px;min-width:44px;padding:0 12px;border:0;border-radius:9px;background:transparent;text-transform:capitalize}
+.seg button{min-height:38px;min-width:44px;padding:0 12px;border:0;border-radius:9px;background:transparent;text-transform:none}
 .seg .on{background:var(--ac);color:var(--acf);font-weight:600}
 .sw{position:relative;width:52px;height:30px;border-radius:15px;border:0;background:var(--bd);padding:0;flex:none}
 .sw::before{content:"";position:absolute;inset:-7px 0}.sw i{position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.15s}
@@ -157,7 +157,7 @@ kbd{font:inherit;font-size:.8rem;border:1px solid var(--bd);border-bottom-width:
   .sk::after{animation:none;background:var(--s2);transform:none}
 }
 .lnk{background:none;border:0;color:var(--ac);font-weight:600;min-height:40px;padding:0 4px}
-.wt{color:#a37a1f}:root[data-theme="dark"] .wt,:root[data-theme="dark"] .tier.mid{color:#d9b25a}
+.wt{color:var(--gold)}:root[data-theme="dark"] .wt,:root[data-theme="dark"] .tier.mid{color:var(--gold)}
 #pq{background:var(--acb);border-color:var(--ac)}
 .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .prow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--bd)}.prow:first-of-type{border-top:0}
@@ -175,11 +175,24 @@ kbd{font:inherit;font-size:.8rem;border:1px solid var(--bd);border-bottom-width:
 [dir=rtl] .orow{padding:8px 28px 8px 4px}
 .orow.mod{padding-inline:4px;background:var(--s2);border-radius:12px;border-bottom:0;margin-top:10px}
 .orow .st{flex:1;display:flex;flex-direction:column;min-width:0}.orow small{color:var(--mu)}
+.o .tx{padding-top:2px}.o i{margin-top:3px}
+.rl{flex:1 1 0;min-width:0}
+.row.stack{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:8px}
+.row.stack .rl{flex:none}.row.stack .seg{width:100%}.row.stack .seg button{flex:1}
+.row.stack .stp{width:auto;align-self:flex-start}.row.stack .stp button{flex:none}
+.s{border-color:var(--bd2)}input[type=text],textarea{border-color:var(--bd2)}.seg{border-color:var(--bd2)}.ck{border-color:var(--bd2)}
+.sw{background:var(--bd2)}.sw[aria-checked=true]{background:var(--ac)}
+::placeholder{color:var(--mu);opacity:1}
+pre{overflow-wrap:anywhere}
+#bk{display:inline-flex;align-items:center;gap:8px}
+.pi{color:var(--ac);display:grid}
+#pq{background:var(--card);border:1px solid var(--bd);box-shadow:var(--sh)}
+#cd.choice .row2{flex-direction:column-reverse}#cd.choice .row2 button{width:100%;flex:none}
 </style></head><body><main>
 
 <section id="home">
-<div class="top"><div class="logo"><i>Q</i>McQuiz</div><button class="s ib" id="gb" aria-label="Settings"></button></div>
-<div id="pq" class="hide" role="region" aria-label="Paused quizzes"><button class="pbn" id="pqB" aria-label="Paused quizzes"><span class="pi" aria-hidden="true">⏸</span><span class="pt"><b id="pqT" dir="auto"></b><small id="pqS"></small></span></button><button class="n" id="pqR">Resume</button></div>
+<div class="top"><div class="logo"><i>Q</i>McQuiz <span class="mu" id="build">v3</span></div><button class="s ib" id="gb" aria-label="Settings"></button></div>
+<div id="pq" class="hide" role="region" aria-label="Paused quizzes"><button class="pbn" id="pqB" aria-label="Paused quizzes"><span class="pi" aria-hidden="true"></span><span class="pt"><b id="pqT" dir="auto"></b><small id="pqS"></small></span></button><button class="n" id="pqR">Resume</button></div>
 <div class="tabs"><button id="b1" class="on">Question bank</button><button id="b2">Add questions</button></div>
 <div id="msg" role="status" aria-live="polite"></div>
 <div id="t1">
@@ -230,13 +243,13 @@ kbd{font:inherit;font-size:.8rem;border:1px solid var(--bd);border-bottom-width:
 <div class="row2"><button class="s" id="tuBack">Back</button><button class="n" id="tuNext"></button></div>
 </div>
 
-<dialog id="pqs" aria-labelledby="pqH"><div class="sh"><h2 id="pqH">Paused quizzes</h2><div id="pqL"></div><div class="row2"><button class="n" id="pqX">Close</button></div></div></dialog>
+<dialog id="pqs" aria-labelledby="pqH"><div class="sh"><div class="top" style="margin:0 0 8px"><h2 id="pqH">Paused quizzes</h2><button class="s ib" id="pqX" aria-label="Close"></button></div><div id="pqL"></div></div></dialog>
 
-<dialog id="ss" aria-labelledby="ssT"><div class="sh"><h2 id="ssT"></h2><div class="mu" id="ssS"></div>
+<dialog id="ss" aria-labelledby="ssT"><div class="sh"><div class="top" style="margin:0 0 4px"><h2 id="ssT"></h2><button class="s ib" id="ssC" aria-label="Close"></button></div><div class="mu" id="ssS"></div>
 <p class="mu">Questions are mixed randomly and stay fixed in each session until you start over.</p>
-<div id="ssL"></div><div class="row2"><button class="s" id="ssR">Start over</button><button class="n" id="ssC">Close</button></div></div></dialog>
+<div id="ssL"></div><div class="row2"><button class="s" id="ssR">Start over</button></div></div></dialog>
 
-<dialog id="kd" aria-labelledby="kdT"><div class="sh"><h2 id="kdT">Keyboard shortcuts</h2>
+<dialog id="kd" aria-labelledby="kdT"><div class="sh"><div class="top" style="margin:0 0 4px"><h2 id="kdT">Keyboard shortcuts</h2><button class="s ib" id="kx" aria-label="Close"></button></div>
 <div class="row"><span>Choose an answer</span><span><kbd>1</kbd>–<kbd>6</kbd> / <kbd>A</kbd>–<kbd>F</kbd></span></div>
 <div class="row"><span>Next / previous question</span><span><kbd>→</kbd> <kbd>←</kbd></span></div>
 <div class="row"><span>Next, or Finish on the last question</span><span><kbd>Enter</kbd></span></div>
@@ -244,7 +257,7 @@ kbd{font:inherit;font-size:.8rem;border:1px solid var(--bd);border-bottom-width:
 <div class="row"><span>Show this help</span><span><kbd>?</kbd></span></div>
 <div class="row"><span>Close a dialog or skip the tour</span><span><kbd>Esc</kbd></span></div>
 <p class="mu">In right-to-left layouts the arrow keys are reversed.</p>
-<div class="row2"><button class="n" id="kx">Close</button></div></div></dialog>
+</div></dialog>
 
 <dialog id="td" aria-labelledby="tdH"><div class="sh"><h2 id="tdH">Time's up</h2><p class="mu" id="tdS" style="font-size:1rem;margin:8px 0 20px"></p><div class="row2"><button class="n" id="tdY">Show results</button></div></div></dialog>
 
@@ -271,7 +284,8 @@ const $=id=>document.getElementById(id);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const svg=p=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
 const IC={gear:svg('<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),ck:svg('<path d="M5 12l5 5 9-10"/>'),x:svg('<path d="M6 6l12 12M18 6L6 18"/>'),grid:svg('<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>'),list:svg('<path d="M4 6h16M4 12h16M4 18h16"/>'),bulb:svg('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.4 1 2.5h6c0-1.1.3-1.8 1-2.5A6 6 0 0 0 12 3z"/>')};
-IC.chev=svg('<path d="M9 6l6 6-6 6"/>');$("gb").innerHTML=IC.gear;$("sx").innerHTML=IC.x;$("clr").innerHTML=svg('<path d="M6 6l12 12M18 6L6 18"/>');
+IC.chev=svg('<path d="M9 6l6 6-6 6"/>');IC.pause=svg('<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>');IC.back=svg('<path d="M15 6l-6 6 6 6"/>');
+$("gb").innerHTML=IC.gear;$("pqX").innerHTML=IC.x;$("kx").innerHTML=IC.x;$("ssC").innerHTML=IC.x;document.querySelector(".pi").innerHTML=IC.pause;$("sx").innerHTML=IC.x;$("clr").innerHTML=svg('<path d="M6 6l12 12M18 6L6 18"/>');
 
 let S={theme:"auto",size:"M",rtl:"auto",per:1,layout:"cards",so:true,sq:false,ex:true,exam:false,swipe:true,auto:true,lang:"auto",ad:true,split:"off",splitN:20,timer:"off",tq:10,ta:10,maxP:10,toa:"wait",...LS.get("mcq_s",{})};
 const AR={
@@ -311,12 +325,12 @@ const AR={
 "Offline saving needs a secure (HTTPS) address.":"الحفظ دون إنترنت يتطلب عنوانًا آمنًا (HTTPS).","Update saved sets":"تحديث المجموعات المحفوظة","Remove all":"إزالة الكل",
 "Saved · {w}":"محفوظة · {w}","Not saved":"غير محفوظة","Saving…":"جارٍ الحفظ…","Save failed":"فشل الحفظ","Saved: {a} · {b} KB":"المحفوظ: {a} · {b} كيلوبايت",
 "Saved copies will be removed from this device.":"ستُزال النسخ المحفوظة من هذا الجهاز.","Remove saved sets?":"إزالة المجموعات المحفوظة؟","Offline mode: showing saved data.":"وضع بلا إنترنت: عرض البيانات المحفوظة.",
-"(default)":"(افتراضي)","(from link)":"(من الرابط)","Loading…":"جارٍ التحميل…","No match.":"لا توجد نتائج.","No sets found.":"لا توجد مجموعات أسئلة.",
+"Pause":"إيقاف مؤقت","Back to results":"العودة إلى النتائج","(default)":"(افتراضي)","(from link)":"(من الرابط)","Loading…":"جارٍ التحميل…","No match.":"لا توجد نتائج.","No sets found.":"لا توجد مجموعات أسئلة.",
 "Could not load the catalog. If you opened this file from disk, host it (GitHub Pages) or run a local server. Details in Settings › Catalogs.":"تعذّر تحميل الفهرس. إذا فتحت الملف من الجهاز مباشرة، فاستضفه (GitHub Pages) أو شغّل خادمًا محليًا. التفاصيل في الإعدادات ‹ الفهارس.",
 "Loaded {f}. Press Start quiz.":"تم تحميل {f}. اضغط «ابدأ الاختبار».","Loaded {a}, skipped {b}:":"تم تحميل {a} وتخطي {b}:","Pasted / file set":"مجموعة أسئلة ملصقة / ملف","Copied ✓":"تم النسخ ✓","Cleared ✓":"تم المسح ✓",
 "{a} of {b} answered":"تمت الإجابة على {a} من {b}","exam mode":"وضع الامتحان","You have a paused quiz. Starting a new one will replace it. Continue?":"لديك اختبار متوقف مؤقتًا. بدء اختبار جديد سيستبدله. هل تريد المتابعة؟",
 "Review":"مراجعة","Tutorial demo":"اختبار تجريبي","✓ Correct":"✓ صحيح","Skipped":"تم التخطي","Correct answer":"الإجابة الصحيحة","Explanation":"الشرح",
-"Page {a} / {b}":"صفحة {a} / {b}","Question {a} / {b}":"سؤال {a} / {b}","Answered {a} of {b}":"أُجيب على {a} من {b}","Score {a}/{b} · {c} of {d}":"النتيجة {a}/{b} · {c} من {d}",
+"Page {a} / {b}":"صفحة {a} / {b}","Question {a} / {b}":"سؤال {a} / {b}","Answered {a} of {b}":"أُجيب على {a} من {b}","{a} correct · {c} of {d} answered":"{a} صحيحة · أُجيب على {c} من {d}",
 "{n} unanswered. Finish anyway?":"عدد الأسئلة غير المُجابة: {n}. هل تريد الإنهاء رغم ذلك؟","{p}% · {m} missed":"{p}٪ · الأسئلة غير الصحيحة: {m}","Retry missed questions ({m})":"إعادة الأسئلة الخاطئة ({m})","(retry)":"(إعادة)",
 "Step {a} of {b}":"الخطوة {a} من {b}",
 "Pick a set":"اختر مجموعة أسئلة","Tap a set to start it.":"المس مجموعة أسئلة لتبدأها.","Combine sets":"ادمج مجموعات الأسئلة","Select lets you tick several sets.":"«تحديد» يتيح لك اختيار عدة مجموعات أسئلة.",
@@ -335,7 +349,8 @@ const ORD=["الأولى","الثانية","الثالثة","الرابعة","ا
 const sessLabel=i=>LANG==="ar"?"الجلسة "+(i<=10?ORD[i-1]:num(i)):"Session "+i;
 const ssn=n=>LANG==="ar"?(n===1?"جلسة واحدة":n===2?"جلستان":(n>=3&&n<=10)?num(n)+" جلسات":num(n)+" جلسة"):n+(n===1?" session":" sessions");
 const mn=n=>LANG==="ar"?(n===1?"وحدة واحدة":n===2?"وحدتان":(n>=3&&n<=10)?num(n)+" وحدات":num(n)+" وحدة"):n+(n===1?" module":" modules");
-const OPTL=v=>v==="wait"?tr("Wait for me"):v==="move"?tr("Move on automatically"):v==="en"?"English":v==="ar"?"العربية":v==="off"?tr("Off"):v==="size"?tr("Size"):v==="count"?tr("Number"):v==="q"?tr("Per question"):v==="all"?tr("Whole quiz"):typeof v==="number"?num(v):tr(String(v));
+const capF=s=>LANG==="ar"?s:s.charAt(0).toUpperCase()+s.slice(1);
+const OPTL=v=>v==="wait"?tr("Wait for me"):v==="move"?tr("Move on automatically"):v==="en"?"English":v==="ar"?"العربية":v==="off"?tr("Off"):v==="size"?tr("Size"):v==="count"?tr("Number"):v==="q"?tr("Per question"):v==="all"?tr("Whole quiz"):typeof v==="number"?num(v):v==="ltr"?"LTR":v==="rtl"?"RTL":capF(tr(String(v)));
 const ORIG=new WeakMap(),SKIP="#qs,#tree,#rt,#cl,pre,textarea,script,style,#prog,#ring";
 function trDom(){if(LANG!=="ar")return;
  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
@@ -355,7 +370,7 @@ const SPEC=[["Appearance",[["Theme","theme",["auto","light","dark"]],["Text size
 function saveS(){LS.set("mcq_s",S);applyS();renderTree();buildS()}
 function buildS(){const b=$("sb");b.innerHTML="";
  SPEC.forEach(([h,rows])=>{const s=document.createElement("section"),hh=document.createElement("h3");hh.textContent=tr(h);s.appendChild(hh);
-  rows.forEach(([l,k,o])=>{if(k==="ad"&&LANG!=="ar")return;if(k==="toa"&&S.timer!=="q")return;const r=document.createElement("div");r.className="row";const lb=document.createElement("span");lb.textContent=tr(l);r.appendChild(lb);
+  rows.forEach(([l,k,o])=>{if(k==="ad"&&LANG!=="ar")return;if(k==="toa"&&S.timer!=="q")return;const r=document.createElement("div");r.className="row";const lb=document.createElement("span");lb.textContent=tr(l);lb.className="rl";r.appendChild(lb);
    if(k==="mpN"){lb.textContent=tr("Paused quizzes to keep");const g=document.createElement("div");g.className="seg stp";const v=document.createElement("span");v.className="stv";v.textContent=num(S.maxP);
     const mk=(tx,d)=>{const e=document.createElement("button");e.textContent=tx;e.setAttribute("aria-label",d>0?"+":"-");e.onclick=()=>{S.maxP=Math.max(1,Math.min(30,(S.maxP|0)+d));saveS()};return e};
     g.append(mk("−",-1),v,mk("+",1));r.appendChild(g);const hn=document.createElement("div");hn.className="mu";hn.style.width="100%";hn.textContent=tr("Each paused quiz uses about 30 KB of browser storage.");r.appendChild(hn);s.appendChild(r);return}
@@ -373,7 +388,11 @@ function buildS(){const b=$("sb");b.innerHTML="";
    if(o){const g=document.createElement("div");g.className="seg";
     o.forEach(v=>{const e=document.createElement("button");e.textContent=OPTL(v);e.className=S[k]===v?"on":"";e.onclick=()=>{S[k]=v;if(k==="lang"){LS.set("mcq_s",S);location.reload();return}saveS()};g.appendChild(e)});r.appendChild(g)}
    else{const e=document.createElement("button");e.className="sw";e.setAttribute("role","switch");e.setAttribute("aria-label",tr(l));e.setAttribute("aria-checked",String(!!S[k]));e.innerHTML="<i></i>";e.onclick=()=>{S[k]=!S[k];if(k==="ad"){LS.set("mcq_s",S);location.reload();return}saveS()};r.appendChild(e)}
-   s.appendChild(r)});b.appendChild(s)})}
+   s.appendChild(r)});b.appendChild(s)});fitRows()}
+function fitRows(){const k=(parseFloat(document.documentElement.style.fontSize)||17)/17,avail=Math.min(innerWidth,560)-56;
+ document.querySelectorAll("#sb .row").forEach(r=>{const g=r.querySelector(".seg"),l=r.querySelector(".rl");if(!g||!l)return;
+  const lw=l.textContent.length*8.6*k+8,cw=[...g.children].reduce((a,e)=>a+(e.classList.contains("stv")?48:Math.max(44,e.textContent.length*8.6*k+26)),8);
+  r.classList.toggle("stack",lw+cw+24>avail)})}
 /* === PATCH: dialog focus helper (item 25) === */
 const FOCUS_MAP=new WeakMap();
 function openDlg(d){FOCUS_MAP.set(d,document.activeElement);d.showModal();const f=d.querySelector("[data-autofocus]")||d.querySelector("button:not(:disabled):not(.hide)");if(f)setTimeout(()=>f.focus({preventScroll:true}),20)}
@@ -383,8 +402,8 @@ document.addEventListener("close",e=>{const d=e.target;if(!d||d.tagName!=="DIALO
 let CD_RESOLVE=null,CH_RES=null;
 function confirmDlg(msg,ok,cancel,title){return new Promise(res=>{CD_RESOLVE=res;CH_RES=null;$("cdT").textContent=title||"";$("cdT").classList.toggle("hide",!title);$("cdB").textContent=msg;$("cdY").textContent=ok||tr("OK");$("cdN").textContent=cancel||tr("Cancel");$("cdN").classList.remove("hide");$("cdZ").classList.add("hide");$("cdY").removeAttribute("data-autofocus");openDlg($("cd"))})}
 function alertDlg(msg,title,ok){return new Promise(res=>{CD_RESOLVE=res;CH_RES=null;$("cdT").textContent=title||tr("Notice");$("cdT").classList.remove("hide");$("cdB").textContent=msg;$("cdY").textContent=ok||tr("OK");$("cdN").classList.add("hide");$("cdZ").classList.add("hide");$("cdY").setAttribute("data-autofocus","");openDlg($("cd"))})}
-function choiceDlg(msg,title){return new Promise(res=>{CD_RESOLVE=null;CH_RES=res;$("cdT").textContent=title||"";$("cdT").classList.toggle("hide",!title);$("cdB").textContent=msg;$("cdY").textContent=tr("Resume");$("cdZ").textContent=tr("Start over");$("cdN").textContent=tr("Cancel");$("cdN").classList.remove("hide");$("cdZ").classList.remove("hide");$("cdY").removeAttribute("data-autofocus");openDlg($("cd"))})}
-function cdDone(v){const r=CD_RESOLVE,c=CH_RES;CD_RESOLVE=null;CH_RES=null;$("cdN").classList.remove("hide");$("cdZ").classList.add("hide");closeDlg($("cd"));if(r)r(v==="resume");if(c)c(v)}
+function choiceDlg(msg,title){return new Promise(res=>{CD_RESOLVE=null;CH_RES=res;$("cdT").textContent=title||"";$("cdT").classList.toggle("hide",!title);$("cdB").textContent=msg;$("cdY").textContent=tr("Resume");$("cdZ").textContent=tr("Start over");$("cdN").textContent=tr("Cancel");$("cdN").classList.remove("hide");$("cdZ").classList.remove("hide");$("cd").classList.add("choice");$("cdY").removeAttribute("data-autofocus");openDlg($("cd"))})}
+function cdDone(v){const r=CD_RESOLVE,c=CH_RES;CD_RESOLVE=null;CH_RES=null;$("cdN").classList.remove("hide");$("cdZ").classList.add("hide");$("cd").classList.remove("choice");closeDlg($("cd"));if(r)r(v==="resume");if(c)c(v)}
 $("cdY").onclick=()=>cdDone("resume");
 $("cdZ").onclick=()=>cdDone("over");
 $("cdN").onclick=()=>cdDone("cancel");
@@ -668,7 +687,7 @@ async function begin(qs,title,link,sid){
  PER=S.timer==="q"?1:+S.per;EXAM=S.exam;REV=false;TO={};TMODE=S.timer;TTOT=TMODE==="q"?S.tq*1000:TMODE==="all"?S.ta*60000:0;TLEFT=TTOT;TQI=-1;Q=qs.map(x=>({...x,o:S.so?shuf([...x.o]):x.o}));if(S.sq)shuf(Q);
  page=0;ans={};TITLE=title;CUR=link||null;openQuiz()}
 function openQuiz(){cancelAuto();autoDone=false;$("quiz").classList.toggle("one",PER===1);$("qt").textContent=(REV?tr("Review")+" · ":"")+TITLE+" · "+qn(Q.length)+(EXAM&&!REV?" · "+tr("exam mode"):"");
- const bk=$("bk");bk.textContent=tr(REV?"← Results":noPause()?"✕ Quit":"⏸ Pause");
+ const bk=$("bk"),lab=tr(REV?"Back to results":noPause()?"Quit":"Pause");bk.innerHTML=(REV?'<span class="arr">'+IC.back+"</span>":noPause()?IC.x:IC.pause)+"<span></span>";bk.lastChild.textContent=lab;
  /* === PATCH: title explains pause-disable (item 24) === */
  bk.title=noPause()?tr("Exam mode and timed quizzes can't be paused or resumed."):"";
  view("quiz");render()}
@@ -716,7 +735,7 @@ function render(){
  $("pi").textContent=tr(PER===1?"Question {a} / {b}":"Page {a} / {b}",{a:page+1,b:PER===1?Q.length:tp});
  $("pv").disabled=page===0||TMODE==="q";$("nx").innerHTML=last?tr(REV?"Done":"Finish"):tr("Next")+' <span class="arr">›</span>';stat();armTimer()}
 function stat(){const c=Object.keys(ans).length;
- $("sc").textContent=REV?tr("Review"):EXAM?tr("Answered {a} of {b}",{a:c,b:Q.length}):tr("Score {a}/{b} · {c} of {d}",{a:score(),b:c,c:c,d:Q.length});
+ $("sc").textContent=REV?tr("Review"):EXAM?tr("Answered {a} of {b}",{a:c,b:Q.length}):tr("{a} correct · {c} of {d} answered",{a:score(),c:c,d:Q.length});
  const pg=$("pg");if(pg)pg.style.width=Math.min(100,(REV?(page+1)*PER:finCount())/Q.length*100)+"%";
  save()}
 function go2(d){if(TMODE==="q"&&d<0)return;cancelAuto();cancelAdv();page+=d;render();scrollTo(0,0);
@@ -795,11 +814,11 @@ async function openSess(start){if(!CUR)return;let pool=null;try{pool=await getPo
  SSC={pool,title:CUR.title,key:CUR.key};
  if(start){const p=getPlan(SSC.key,sig(pool),pool.length),i=p.ss.findIndex(x=>!x.d);if(i>=0)return startSession(i)}
  showSheet();openDlg($("ss"))}
-function sessInfo(s){const el=$("rse"),nx=$("rns"),al=$("rss");[el,nx,al].forEach(e=>e.classList.add("hide"));
+function sessInfo(s){$("rr").classList.add("n");$("rr").classList.remove("s");const el=$("rse"),nx=$("rns"),al=$("rss");[el,nx,al].forEach(e=>e.classList.add("hide"));
  if(!CUR||DEMO)return;const st=SP(),e=st[CUR.key],p=e&&e.plans&&e.plans[CUR.pk];if(!p||!p.ss[CUR.i])return;
  p.ss[CUR.i].d=1;p.ss[CUR.i].c=s;p.ss[CUR.i].t=Q.length;LS.set("mcq_sp",st);
  const dn=p.ss.filter(x=>x.d).length;el.textContent=sessLabel(CUR.i+1)+" · "+tr("{a} of {b} sessions done",{a:dn,b:p.ss.length});
- el.classList.remove("hide");al.classList.remove("hide");if(dn<p.ss.length)nx.classList.remove("hide")}
+ el.classList.remove("hide");al.classList.remove("hide");if(dn<p.ss.length){nx.classList.remove("hide");$("rr").classList.remove("n");$("rr").classList.add("s")}}
 $("rns").onclick=()=>openSess(true);$("rss").onclick=()=>openSess(false);
 $("ssC").onclick=()=>closeDlg($("ss"));$("ss").addEventListener("close",renderTree);
 $("ssR").onclick=async()=>{if(!await confirmDlg(tr("This clears progress and re-mixes the questions in this set."),tr("Start over"),tr("Cancel"),tr("Start over?")))return;
