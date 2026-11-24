@@ -609,8 +609,11 @@ async function getSet(s){
   s.qs=p.qs;s.count=p.qs.length;s.off=fromOff;s.err=p.errs.length?p.errs.length+" question(s) skipped":"";setCount(s);return s.qs}
  catch(e){s.err=e.message;setCount(s);throw new Error(s.title+": "+e.message)}}
 function queueCounts(){if(QC_AC)QC_AC.abort();QC_AC=new AbortController();const ac=QC_AC;
+ const saved=OM(),cached=LS.get("mcq_counts",{}),off=!navigator.onLine;
+ SETS.forEach(s=>{if(s.count===null&&cached[s.url]!=null&&(!off||saved[s.url]))s.count=cached[s.url]});
+ renderTree();
  const q=SETS.filter(s=>s.count===null);let i=0;
- const w=async()=>{while(i<q.length&&!ac.signal.aborted){const s=q[i++];try{await getSet(s)}catch(e){}}};
+ const w=async()=>{while(i<q.length&&!ac.signal.aborted){const s=q[i++];try{await getSet(s);if(s.count!=null&&!s.err){cached[s.url]=s.count;LS.set("mcq_counts",cached)}}catch(e){}}};
  for(let k=0;k<3;k++)w()}
 async function startSets(list){list=[...list].sort((a,b)=>a.url<b.url?-1:1);
  const m=$("msg");m.className="mu";m.textContent=tr("Loading…");
@@ -906,14 +909,30 @@ async function offSave(s){const r=await fetch(s.url,{cache:"no-cache"});if(!r.ok
  const t=await r.text(),p=parse(t);if(!p.qs.length)throw new Error("empty set");
  if(!await offPut(s.url,t))throw new Error("storage");
  const m=OM();m[s.url]={t:Date.now(),kb:Math.max(1,Math.ceil(t.length/1024)),n:p.qs.length};LS.set("mcq_off",m)}
-async function offToggle(arr,on){
- for(const s of arr){const sm=$("off-"+s.id);
-  if(on){if(OM()[s.url])continue;if(sm)sm.textContent=tr("Saving…");try{await offSave(s)}catch(e){if(sm)sm.textContent=tr("Save failed")}}
-  else{await offDel(s.url);const m=OM();delete m[s.url];LS.set("mcq_off",m)}}
- renderOff()}
+async function evictSet(url) {
+  await offDel(url); 
+  for(const name of [OFFC,"mcquiz-v3-runtime","mcquiz-catalogs"]){try{await(await caches.open(name)).delete(url);}catch(e){}}
+  const s = SETS.find(x => x.url === url);
+  if(s){s.qs=null;s.count=null;s.off=false;s.offline=false;s.err="";setCount(s);}
+  const counts = LS.get("mcq_counts",{});
+  if(counts[url]){delete counts[url];LS.set("mcq_counts",counts);}
+  const m=OM();
+  if (m[url]){delete m[url];LS.set("mcq_off", m);}}
+ async function offToggle(arr, on){
+  for(const s of arr){
+    const sm=$("off-"+s.id);
+    if(on){if(OM()[s.url])continue;if(sm)sm.textContent=tr("Saving…");try{await offSave(s);}catch(e){if(sm)sm.textContent=tr("Save failed");}} 
+    else {await evictSet(s.url);}}
+  renderOff();}
 $("offU").onclick=async()=>{const m=OM();$("offU").disabled=true;for(const s of SETS.filter(x=>m[x.url])){try{await offSave(s)}catch(e){}}renderOff()};
 $("offR").onclick=async()=>{if(!await confirmDlg(tr("Saved copies will be removed from this device."),tr("Remove all"),tr("Cancel"),tr("Remove saved sets?")))return;
- for(const u of Object.keys(OM()))await offDel(u);LS.set("mcq_off",{});renderOff()};
+  $("offR").disabled = true;
+  $("offU").disabled = true;
+  const savedUrls = Object.keys(OM());
+  for (const url of savedUrls) {await evictSet(url);}
+  renderOff();
+  renderTree();
+  };
 /*OFFUI-END*/
 const TOUR=[
  {c:"home",t:"Pick a set",b:"Tap a set to start it.",el:()=>$q(".set",$("tree"))},
