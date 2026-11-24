@@ -29,6 +29,8 @@ jobs:
 
       - name: Install Bubblewrap & Build APK
         run: |
+          cat ~/.bubblewrap/config.json
+          "$JAVA_HOME/bin/java" -version
           npm install -g @bubblewrap/cli
           
           yes | sdkmanager --licenses || true
