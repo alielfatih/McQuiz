@@ -17,38 +17,43 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
       - name: Decode Keystore
         run: |
           mkdir -p app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
 
-      - name: Install Bubblewrap & Build APK
+      - name: Inject Signing Config into build.gradle
         run: |
-          cat ~/.bubblewrap/config.json
-          "$JAVA_HOME/bin/java" -version
-          npm install -g @bubblewrap/cli
+          # Add signing config to app/build.gradle
+          cat << 'EOF' >> app/build.gradle
           
-          yes | sdkmanager --licenses || true
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file("release.keystore")
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEY_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
-          # Pipe 'n' to say "No" to JDK, and 'n' again for the SDK prompt if it appears
-          printf 'n\nn\n' | bubblewrap build --skipPwaValidation \
-            --jdkPath="$JAVA_HOME" \
-            --androidSdkPath="$ANDROID_HOME" \
-            --signingKeyPath=app/release.keystore \
-            --signingKeyAlias="${{ secrets.KEY_ALIAS }}" \
-            --signingKeyPassword="${{ secrets.KEY_PASSWORD }}" \
-            --keystorePassword="${{ secrets.KEYSTORE_PASSWORD }}"
+      - name: Build APK with Gradle
+        run: |
+          cd app
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
 
       - name: Extract SHA-256 & Generate assetlinks.json
         run: |
           FINGERPRINT=$(keytool -list -v -keystore app/release.keystore -alias "${{ secrets.KEY_ALIAS }}" -storepass "${{ secrets.KEYSTORE_PASSWORD }}" | grep "SHA256:" | awk '{print $2}')
-          echo "SHA256: $FINGERPRINT"
-
+          
           mkdir -p .well-known output
           cat > .well-known/assetlinks.json <<EOF
           [{
@@ -60,8 +65,7 @@ jobs:
             }
           }]
           EOF
-
-          cp .well-known/assetlinks.json output/assetlinks.json
+          cp .well-known/assetlinks.json output/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
