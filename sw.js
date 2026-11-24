@@ -8,6 +8,7 @@ const VERSION = "mcquiz-v3";
 const SHELL_CACHE = VERSION + "-shell";
 const RUNTIME_CACHE = VERSION + "-runtime"; // static assets only (html, icons, css, js)
 const SETS_CACHE = "mcquiz-sets";           // written by the page, read here as offline fallback
+const CATS_CACHE = "mcquiz-catalogs";   // unversioned, like SETS_CACHE
 
 const SHELL = [
   "./",
@@ -83,6 +84,41 @@ self.addEventListener("fetch", e => {
 
   // Set files and catalogs: the user chooses what is saved offline.
   // Network first; if offline, fall back to the page-managed mcquiz-sets cache.
+  const isCat    = /(?:^|\/)(?:index|catalog)\.json$/i.test(url.pathname); // catalog files
+
+  // --- Catalogs: cache-first, tiny, page-managed ---
+  if (isJSON && isCat) {
+    e.respondWith((async () => {
+      for (const name of [CATS_CACHE, SETS_CACHE, RUNTIME_CACHE]) {
+        const hit = await (await caches.open(name)).match(req, { ignoreVary: true });
+        if (hit) {
+          // background refresh, non-blocking
+          e.waitUntil((async () => {
+            try {
+              const fresh = await fetch(req, { cache: "reload" });
+              if (fresh && fresh.ok) {
+                const c = await caches.open(CATS_CACHE);
+                await c.put(req, fresh.clone());
+              }
+            } catch (err) {}
+          })());
+          return hit;
+        }
+      }
+      // no cache → go to network (first visit)
+      try {
+        const res = await fetch(req);
+        if (res && res.ok) {
+          const c = await caches.open(CATS_CACHE);
+          c.put(req, res.clone()).catch(() => {});
+        }
+        return res;
+      } catch (err) { return Response.error(); }
+    })());
+    return;
+  }
+
+  // --- Set files: network-first (fresh), fallback to mcquiz-sets (opt-in) ---
   if (isJSON) {
     e.respondWith((async () => {
       try {
