@@ -44,7 +44,7 @@ jobs:
           }
           EOF
 
-          yes n | bubblewrap build \
+          printf '\n\nn\n' | bubblewrap build \
             --signingKeyPath=app/release.keystore \
             --signingKeyAlias="${{ secrets.KEY_ALIAS }}" \
             --signingKeyPassword="${{ secrets.KEY_PASSWORD }}" \
