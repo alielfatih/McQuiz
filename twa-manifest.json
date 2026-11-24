@@ -3,7 +3,7 @@
   "host": "alielfatih.github.io",
   "name": "McQuiz",
   "launcherName": "McQuiz",
-  "display": "fullscreen-sticky",
+  "display": "standalone",
   "themeColor": "#F6F4EF",
   "themeColorDark": "#000000",
   "navigationColor": "#000000",
