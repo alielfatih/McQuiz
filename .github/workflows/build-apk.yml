@@ -31,11 +31,10 @@ jobs:
         run: |
           npm install -g @bubblewrap/cli
           
-          # Accept all Android SDK licenses
           yes | sdkmanager --licenses || true
 
-          # Build using direct path arguments (bypasses the interactive prompts)
-          bubblewrap build --skipPwaValidation \
+          # Pipe 'n' to say "No" to JDK, and 'n' again for the SDK prompt if it appears
+          printf 'n\nn\n' | bubblewrap build --skipPwaValidation \
             --jdkPath="$JAVA_HOME" \
             --androidSdkPath="$ANDROID_HOME" \
             --signingKeyPath=app/release.keystore \
