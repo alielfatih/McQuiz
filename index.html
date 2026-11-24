@@ -574,11 +574,17 @@ $("gs").onclick=()=>startSets(SETS.filter(s=>SEL.has(s.id)));
 /* === PATCH: friendly 404 (item 22) === */
 async function getSet(s){
  if(s.qs)return s.qs;
+ const fetchFresh=async()=>{const r=await fetch(s.url,{cache:"no-cache"});
+  if(!r.ok)throw new Error(r.status===404?tr("Could not load this set. The file may have moved."):"HTTP "+r.status);return r.text()};
+ // silent background refresh for sets the user chose to save
+ const refreshSaved=async()=>{try{const t=await fetchFresh(),p=parse(t);
+  if(p.qs.length&&OM()[s.url]){await offPut(s.url,t);const m=OM();
+   m[s.url]={t:Date.now(),kb:Math.max(1,Math.ceil(t.length/1024)),n:p.qs.length};LS.set("mcq_off",m)}}catch(e){}};
  try{let text=null,fromOff=false;
-  try{const r=await fetch(s.url,{cache:"no-cache"});if(!r.ok)throw new Error(r.status===404?tr("Could not load this set. The file may have moved."):"HTTP "+r.status);text=await r.text()}
-  catch(e){const o=await offGet(s.url);if(o===null)throw e;text=o;fromOff=true}
+  if(OM()[s.url]){const o=await offGet(s.url);
+   if(o!==null){text=o;fromOff=true;refreshSaved(s)}} // instant open + background update
+  if(text===null)text=await fetchFresh();
   const p=parse(text);if(!p.qs.length)throw new Error(p.errs[0]||"empty set");
-  if(!fromOff&&OM()[s.url])offPut(s.url,text);
   s.qs=p.qs;s.count=p.qs.length;s.off=fromOff;s.err=p.errs.length?p.errs.length+" question(s) skipped":"";setCount(s);return s.qs}
  catch(e){s.err=e.message;setCount(s);throw new Error(s.title+": "+e.message)}}
 function queueCounts(){if(QC_AC)QC_AC.abort();QC_AC=new AbortController();const ac=QC_AC;
