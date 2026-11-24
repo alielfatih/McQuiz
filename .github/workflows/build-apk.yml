@@ -22,34 +22,40 @@ jobs:
         with:
           node-version: '18'
 
-      # Notice the path change here based on your screenshot:
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools;build-tools;34.0.0;platforms;android-34
 
-      - name: Install Bubblewrap & Build APK
+      - name: Decode Keystore
+        run: |
+          mkdir -p app
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
+
+      - name: Configure Bubblewrap & Build APK
         run: |
           npm install -g @bubblewrap/cli
-          
-          # Tell Bubblewrap where GitHub's pre-installed JDK and Android SDK are
-          bubblewrap build --skipPwaValidation \
-            --jdkPath="$JAVA_HOME" \
-            --androidSdkPath="$ANDROID_HOME" \
+
+          mkdir -p ~/.bubblewrap
+          cat <<EOF > ~/.bubblewrap/config.json
+          {
+            "jdkPath": "$JAVA_HOME",
+            "androidSdkPath": "${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          }
+          EOF
+
+          yes n | bubblewrap build \
             --signingKeyPath=app/release.keystore \
-            --signingKeyAlias=${{ secrets.KEY_ALIAS }} \
-            --signingKeyPassword=${{ secrets.KEY_PASSWORD }} \
-            --keystorePassword=${{ secrets.KEYSTORE_PASSWORD }}
+            --signingKeyAlias="${{ secrets.KEY_ALIAS }}" \
+            --signingKeyPassword="${{ secrets.KEY_PASSWORD }}" \
+            --keystorePassword="${{ secrets.KEYSTORE_PASSWORD }}"
 
       - name: Extract SHA-256 & Generate assetlinks.json
         run: |
-          FINGERPRINT=$(keytool -list -v -keystore app/release.keystore -alias ${{ secrets.KEY_ALIAS }} -storepass ${{ secrets.KEYSTORE_PASSWORD }} | grep "SHA256:" | awk '{print $2}')
+          FINGERPRINT=$(keytool -list -v -keystore app/release.keystore -alias "${{ secrets.KEY_ALIAS }}" -storepass "${{ secrets.KEYSTORE_PASSWORD }}" | grep "SHA256:" | awk '{print $2}')
           echo "SHA256: $FINGERPRINT"
-          
-          mkdir -p .well-known
-          # Make sure to change the package_name to your actual package name!
+
+          mkdir -p .well-known output
           cat > .well-known/assetlinks.json <<EOF
           [{
             "relation": ["delegate_permission/common.handle_all_urls"],
@@ -60,15 +66,13 @@ jobs:
             }
           }]
           EOF
-          
-          mkdir -p output
-          cp .well-known/assetlinks.json output/
+
+          cp .well-known/assetlinks.json output/assetlinks.json
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
-          # Adjusted path for the APK output
           path: app/build/outputs/apk/release/*.apk
 
       - name: Upload assetlinks.json
