@@ -338,7 +338,7 @@ const AR={
 "Instant feedback":"تصحيح فوري","Tap an answer to see it right away.":"المس إجابة لترى النتيجة فورًا.","Move on":"انتقل","Swipe or tap Next. Pause is at the top.":"اسحب أو المس «التالي». زر الإيقاف في الأعلى.",
 "Retry only the questions you missed.":"أعد الأسئلة التي أخطأت فيها فقط.","Exam mode, theme and more live here.":"وضع الامتحان والسمة وغيرها هنا.",
 /* === PATCH: new keys === */
-"Perfect score!":"نتيجة كاملة!","Great work!":"عمل رائع!","Keep going":"واصل","Review recommended":"يُنصح بالمراجعة","Score: {p}%":"النتيجة: {p}٪","Retry":"إعادة المحاولة","Could not load this set. The file may have moved.":"تعذّر تحميل هذه المجموعة. ربما نُقل الملف.","Malformed JSON on line {n}: {msg}":"JSON غير صالح في السطر {n}: {msg}","This set couldn't be loaded.":"تعذّر تحميل هذه المجموعة.","OK":"حسنًا","Cancel":"إلغاء","Time remaining: {s} seconds":"الوقت المتبقي: {s} ثانية"};
+"Perfect score!":"نتيجة كاملة!","Great work!":"عمل رائع!","Keep going":"واصل","Review recommended":"يُنصح بالمراجعة","Score: {p}%":"النتيجة: {p}٪","Retry":"إعادة المحاولة","Could not load this set. The file may have moved.":"تعذّر تحميل هذه المجموعة. ربما نُقل الملف.","Malformed JSON on line {n}: {msg}":"JSON غير صالح في السطر {n}: {msg}","This set couldn't be loaded.":"تعذّر تحميل هذه المجموعة.","OK":"حسنًا","Cancel":"إلغاء","Time remaining: {s} seconds":"الوقت المتبقي: {s} ثانية", "No saved sets available offline.": "لا توجد مجموعات أسئلة محفوظة متاحة دون إنترنت.", "Offline": "بدون إنترنت",};
 const LANG=(S.lang==="ar"||(S.lang!=="en"&&/^ar/i.test(navigator.language||"")))?"ar":"en";
 const AD="٠١٢٣٤٥٦٧٨٩";
 const num=n=>(LANG==="ar"&&S.ad)?String(n).replace(/\d/g,d=>AD[d]):String(n);
@@ -568,11 +568,13 @@ function renderTree(){
  const box=$("tree"),f=$("flt").value.trim().toLowerCase();box.innerHTML="";box.className="sets "+S.layout;
  $("lv").innerHTML=S.layout==="cards"?IC.list:IC.grid;$("hint").classList.toggle("hide",SM);
  $("tools").classList.toggle("has-filter",!!f);
- const list=SETS.filter(s=>!f||[s.title,s.module,s.subject,s.topic].join(" ").toLowerCase().includes(f));
+ const isOffline = !navigator.onLine;
+ const savedSets = LS.get("mcq_off", {}); // Get the list of saved sets
+ const list=SETS.filter(s=>{if(isOffline && !savedSets[s.url]) return false; return !f||[s.title,s.module,s.subject,s.topic].join(" ").toLowerCase().includes(f);});
  const nq=list.reduce((a,s)=>a+(s.count||0),0);
  const mods=new Set(list.map(s=>s.module)).size;
  $("sum").textContent=list.length?(sn(list.length)+(mods>1?" · "+mn(mods):"")+(nq?" · "+qn(nq):"")):"";
- if(!list.length){box.className="mu";box.textContent=tr(SETS.length?"No match.":"No sets found.");return}
+ if(!list.length){box.className="mu"; box.textContent = isOffline ? tr("No saved sets available offline.") : tr(SETS.length?"No match.":"No sets found."); return;}
  const tree={k:{},s:[]};
  list.forEach(s=>{let n=tree;[s.module,s.subject,s.topic].filter(Boolean).forEach(p=>{n=n.k[p]=n.k[p]||{k:{},s:[]}});n.s.push(s)});
  (function draw(n,el,d,p){
