@@ -1,2 +1,4 @@
 sets/ignored/
 sets/index.json
+*.keystore
+*.jks

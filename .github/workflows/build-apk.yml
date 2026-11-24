@@ -1,0 +1,72 @@
+name: Build Signed APK & Generate DAL
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Notice the path change here based on your screenshot:
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
+
+      - name: Install Bubblewrap & Build APK
+        run: |
+          npm install -g @bubblewrap/cli
+          # Run in the root directory where twa-manifest.json lives
+          bubblewrap build --skipPwaValidation \
+            --signingKeyPath=app/release.keystore \
+            --signingKeyAlias=${{ secrets.KEY_ALIAS }} \
+            --signingKeyPassword=${{ secrets.KEY_PASSWORD }} \
+            --keystorePassword=${{ secrets.KEYSTORE_PASSWORD }}
+
+      - name: Extract SHA-256 & Generate assetlinks.json
+        run: |
+          FINGERPRINT=$(keytool -list -v -keystore app/release.keystore -alias ${{ secrets.KEY_ALIAS }} -storepass ${{ secrets.KEYSTORE_PASSWORD }} | grep "SHA256:" | awk '{print $2}')
+          echo "SHA256: $FINGERPRINT"
+          
+          mkdir -p .well-known
+          # Make sure to change the package_name to your actual package name!
+          cat > .well-known/assetlinks.json <<EOF
+          [{
+            "relation": ["delegate_permission/common.handle_all_urls"],
+            "target": {
+              "namespace": "android_app",
+              "package_name": "io.github.alielfatih.mcquiz",
+              "sha256_cert_fingerprints": ["$FINGERPRINT"]
+            }
+          }]
+          EOF
+          
+          mkdir -p output
+          cp .well-known/assetlinks.json output/
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          # Adjusted path for the APK output
+          path: app/build/outputs/apk/release/*.apk
+
+      - name: Upload assetlinks.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: assetlinks.json
+          path: output/assetlinks.json
