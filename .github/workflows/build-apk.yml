@@ -24,7 +24,7 @@ jobs:
 
       - name: Inject Signing Config into build.gradle
         run: |
-          # Add signing config to app/build.gradle
+          # Use the correct path to your app module's gradle file
           cat << 'EOF' >> app/build.gradle
           
           android {
@@ -46,9 +46,9 @@ jobs:
 
       - name: Build APK with Gradle
         run: |
-          cd app
+          # Run from the root folder, target the :app module
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew :app:assembleRelease --no-daemon
 
       - name: Extract SHA-256 & Generate assetlinks.json
         run: |
