@@ -1,9 +1,10 @@
 name: Build Signed APK & Generate DAL
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -78,3 +79,14 @@ jobs:
         with:
           name: assetlinks.json
           path: output/assetlinks.json
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/*.apk
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
