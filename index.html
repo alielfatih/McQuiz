@@ -287,7 +287,7 @@ const IC={gear:svg('<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><ci
 IC.chev=svg('<path d="M9 6l6 6-6 6"/>');IC.pause=svg('<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>');IC.back=svg('<path d="M15 6l-6 6 6 6"/>');
 $("gb").innerHTML=IC.gear;$("pqX").innerHTML=IC.x;$("kx").innerHTML=IC.x;$("ssC").innerHTML=IC.x;document.querySelector(".pi").innerHTML=IC.pause;$("sx").innerHTML=IC.x;$("clr").innerHTML=svg('<path d="M6 6l12 12M18 6L6 18"/>');
 
-let S={theme:"auto",size:"M",rtl:"auto",per:1,layout:"cards",so:true,sq:false,ex:true,exam:false,swipe:true,auto:true,lang:"auto",ad:true,split:"off",splitN:20,timer:"off",tq:10,ta:10,maxP:10,toa:"wait",...LS.get("mcq_s",{})};
+let S={theme:"auto",size:"M",rtl:"auto",per:1,layout:"cards",so:true,sq:false,ex:true,exam:false,swipe:true,auto:true,lang:"auto",ad:true,split:"off",splitN:20,timer:"off",tq:10,ta:10,maxP:10,toa:"wait",autoSave:false,...LS.get("mcq_s",{})};
 const AR={
 "Paused":"متوقف مؤقتًا","Resume":"استئناف","Discard":"حذف","Question bank":"بنك الأسئلة","Add questions":"إضافة أسئلة","Select":"تحديد","Done":"تم",
 "Filter sets…":"ابحث في مجموعات الأسئلة…","Filter sets":"ابحث في مجموعات الأسئلة","Clear filter":"مسح البحث","Switch cards or list":"التبديل بين البطاقات والقائمة",
@@ -338,7 +338,7 @@ const AR={
 "Instant feedback":"تصحيح فوري","Tap an answer to see it right away.":"المس إجابة لترى النتيجة فورًا.","Move on":"انتقل","Swipe or tap Next. Pause is at the top.":"اسحب أو المس «التالي». زر الإيقاف في الأعلى.",
 "Retry only the questions you missed.":"أعد الأسئلة التي أخطأت فيها فقط.","Exam mode, theme and more live here.":"وضع الامتحان والسمة وغيرها هنا.",
 /* === PATCH: new keys === */
-"Perfect score!":"نتيجة كاملة!","Great work!":"عمل رائع!","Keep going":"واصل","Review recommended":"يُنصح بالمراجعة","Score: {p}%":"النتيجة: {p}٪","Retry":"إعادة المحاولة","Could not load this set. The file may have moved.":"تعذّر تحميل هذه المجموعة. ربما نُقل الملف.","Malformed JSON on line {n}: {msg}":"JSON غير صالح في السطر {n}: {msg}","This set couldn't be loaded.":"تعذّر تحميل هذه المجموعة.","OK":"حسنًا","Cancel":"إلغاء","Time remaining: {s} seconds":"الوقت المتبقي: {s} ثانية", "No saved sets available offline.": "لا توجد مجموعات أسئلة محفوظة متاحة دون إنترنت.", "Offline": "بدون إنترنت",};
+"Perfect score!":"نتيجة كاملة!","Great work!":"عمل رائع!","Keep going":"واصل","Review recommended":"يُنصح بالمراجعة","Score: {p}%":"النتيجة: {p}٪","Retry":"إعادة المحاولة","Could not load this set. The file may have moved.":"تعذّر تحميل هذه المجموعة. ربما نُقل الملف.","Malformed JSON on line {n}: {msg}":"JSON غير صالح في السطر {n}: {msg}","This set couldn't be loaded.":"تعذّر تحميل هذه المجموعة.","OK":"حسنًا","Cancel":"إلغاء","Time remaining: {s} seconds":"الوقت المتبقي: {s} ثانية", "No saved sets available offline.": "لا توجد مجموعات أسئلة محفوظة متاحة دون إنترنت.", "Offline": "بدون إنترنت","Autosave":"حفظ تلقائي",};
 const LANG=(S.lang==="ar"||(S.lang!=="en"&&/^ar/i.test(navigator.language||"")))?"ar":"en";
 const AD="٠١٢٣٤٥٦٧٨٩";
 const num=n=>(LANG==="ar"&&S.ad)?String(n).replace(/\d/g,d=>AD[d]):String(n);
@@ -512,7 +512,7 @@ const qc=new URLSearchParams(location.search).get("catalog");
 const userCats=()=>LS.get("mcq_cats",[]);
 /*OFFLINE-START*/
 const OFFC="mcquiz-sets";let OFFLINE_USED=false;
-const offOK=()=>"caches" in window&&(location.protocol==="https:"||location.hostname==="localhost");
+const offOK=()=>"caches" in window&&(location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1");
 const OM=()=>{const v=LS.get("mcq_off",{});return v&&typeof v==="object"&&!Array.isArray(v)?v:{}};
 async function offPut(url,text){if(!offOK())return false;try{const c=await caches.open(OFFC);await c.put(url,new Response(text,{headers:{"content-type":"text/plain;charset=utf-8"}}));return true}catch(e){return false}}
 async function offGet(url){if(!offOK())return null;try{const c=await caches.open(OFFC),r=await c.match(url);return r?await r.text():null}catch(e){return null}}
@@ -597,15 +597,18 @@ async function getSet(s){
  if(s.qs)return s.qs;
  const fetchFresh=async()=>{const r=await fetch(s.url,{cache:"no-cache"});
   if(!r.ok)throw new Error(r.status===404?tr("Could not load this set. The file may have moved."):"HTTP "+r.status);return r.text()};
- // silent background refresh for sets the user chose to save
  const refreshSaved=async()=>{try{const t=await fetchFresh(),p=parse(t);
   if(p.qs.length&&OM()[s.url]){await offPut(s.url,t);const m=OM();
    m[s.url]={t:Date.now(),kb:Math.max(1,Math.ceil(t.length/1024)),n:p.qs.length};LS.set("mcq_off",m)}}catch(e){}};
+ const autoPersist=async(t,p)=>{if(!S.autoSave||OM()[s.url]||!p.qs.length)return;
+  if(!await offPut(s.url,t))return;const m=OM();
+  m[s.url]={t:Date.now(),kb:Math.max(1,Math.ceil(t.length/1024)),n:p.qs.length};LS.set("mcq_off",m)};
  try{let text=null,fromOff=false;
   if(OM()[s.url]){const o=await offGet(s.url);
-   if(o!==null){text=o;fromOff=true;refreshSaved(s)}} // instant open + background update
+   if(o!==null){text=o;fromOff=true;refreshSaved(s)}}
   if(text===null)text=await fetchFresh();
   const p=parse(text);if(!p.qs.length)throw new Error(p.errs[0]||"empty set");
+  if(!fromOff)autoPersist(text,p);
   s.qs=p.qs;s.count=p.qs.length;s.off=fromOff;s.err=p.errs.length?p.errs.length+" question(s) skipped":"";setCount(s);return s.qs}
  catch(e){s.err=e.message;setCount(s);throw new Error(s.title+": "+e.message)}}
 function queueCounts(){if(QC_AC)QC_AC.abort();QC_AC=new AbortController();const ac=QC_AC;
@@ -891,6 +894,7 @@ const offSel=list=>{const m=OM(),n=list.filter(s=>m[s.url]).length;return n===0?
 function renderOff(){const L=$("offL");L.innerHTML="";
  if(!offOK()){$("offN").textContent=tr("Offline saving needs a secure (HTTPS) address.");$("offU").disabled=true;$("offR").disabled=true;$("offS").textContent="";return}
  $("offN").textContent=tr("Save sets on this device to use them without internet.");
+ {const r=document.createElement("div");r.className="row";const lb=document.createElement("span");lb.className="rl";lb.textContent=tr("Autosave");const sw=document.createElement("button");sw.className="sw";sw.setAttribute("role","switch");sw.setAttribute("aria-checked",String(!!S.autoSave));sw.innerHTML="<i></i>";sw.onclick=()=>{S.autoSave=!S.autoSave;saveS();renderOff()};r.append(lb,sw);L.appendChild(r)}
  const m=OM(),mods={};SETS.forEach(s=>{(mods[s.module]=mods[s.module]||[]).push(s)});
  Object.keys(mods).forEach(k=>{const arr=mods[k],st=offSel(arr),hd=document.createElement("button");
   hd.className="orow mod";hd.setAttribute("role","checkbox");hd.setAttribute("aria-checked",st===2?"true":st===1?"mixed":"false");
